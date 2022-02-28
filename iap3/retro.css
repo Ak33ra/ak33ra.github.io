@@ -1,0 +1,272 @@
+@import url('https://fonts.googleapis.com/css2?family=Hahmlet:wght@300&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+a {
+  text-decoration: none;
+}
+
+li {
+  list-style: none;
+}
+
+@font-face{
+  font-family: 'Apple II';
+  src: url('fonts/font.ttf');
+}
+
+/* NAVBAR */
+
+.navbar {
+  font-family: 'Hamlet', serif;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  background-color: rgb(5, 105, 235);
+  color: white;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2)
+}
+
+.nav-links{
+  padding-right: 10px;
+}
+
+.nav-links a {
+  color: white;
+  padding: 14px 16px;
+  text-align: center;
+  display: block;
+}
+
+.logo {
+  max-width: 15%;
+  height: auto;
+  border-radius: 50%;
+}
+
+
+/* NAVBAR MENU */
+
+.menu {
+  display: flex;
+  gap: 1em;
+  font-size: 18px;
+}
+
+.menu li a:hover{
+  background-color: rgb(65, 139, 236);
+  border-radius: 5px;
+  transition: 0.3s ease;
+}
+
+.menu li {
+  padding: 10px 14px;
+}
+
+/* DROPDOWN MENU */
+
+.iap1 {
+  position: relative;
+}
+
+.iap2 {
+  position: relative;
+}
+
+.iap3 {
+  position: relative;
+}
+
+.dropdown {
+  padding: 1em 0;
+  position: absolute; /*WITH RESPECT TO PARENT*/
+  display: none;
+  border-radius: 8px;
+  top: 100%;
+  transform: translateX(-30%);
+  background-color: rgba(128, 128, 128, 0.5);
+  box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.2);
+}
+
+.dropdown li + li {
+  margin-top: 10px;
+}
+
+.dropdown li {
+  padding: 0.5em 1em;
+  width: 10em;
+  text-align: center;
+}
+
+.iap1:hover .dropdown{
+  display: block;
+}
+
+.iap2:hover .dropdown {
+  display: block;
+
+}
+
+.iap3:hover .dropdown{
+  display: block;
+}
+
+/* RESPONSIVE MENU */
+
+input[type=checkbox]{
+  display:none;
+}
+
+/*HAMBURGER MENU */
+
+.hamburger {
+  display: none;
+  font-size: 24px;
+  user-select: none;
+}
+
+/* MEDIA QUERIES, if screen is 768px or less */
+
+@media (max-width: 768px){
+  .menu {
+      display: none;
+      position: absolute;
+      background-color: gray;
+      top:auto;
+      right: 0%;
+      text-align: center;
+      padding: 16px 0;
+      box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.2);
+      z-index: 2;
+  }
+
+  .menu li:hover {
+      display: inline-block;
+      transition: 0.3s ease;
+  }
+
+  .menu li + li {
+      margin-top: 12px;
+  }
+
+  input[type=checkbox]:checked ~ .menu{
+      display: block;
+  }
+
+  input[type=checkbox]:checked ~ .hamburger{
+      color: gray;
+  }
+
+  .hamburger {
+      display: block;
+  }
+
+  .dropdown {
+      top: 0;
+      transform: translateX(-108%);
+      background-color: rgba(128, 128, 128, 0.5);
+      box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.2);
+  }
+
+}
+
+body {
+  color: #ff8012;
+  font-size: 2.2vh;
+  font-family: 'Apple II';
+  line-height: 4vh;
+  /* screen glow */
+  background-image: radial-gradient(
+    #1f0b00, black 120%
+  );
+  /* text glow */
+  text-shadow: 0 0 5px rgba(255, 78, 0, 0.6);
+}
+
+/* scanlines */
+body::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: repeating-linear-gradient(rgba(255, 78, 0, 0.03) 0.5vh, rgba(0, 0, 0, 0.05) 0.8vh);
+  z-index: -1;
+}
+
+/* scrollbar */
+::-webkit-scrollbar {
+  width: 1vw;
+}
+
+::-webkit-scrollbar-track {
+  background: #000;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #000;
+}
+
+.img {
+  white-space: pre;
+  display: inline-block;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+#output {
+  padding: 2vw 2vw 0 2vw;
+}
+
+#output div {
+  margin-bottom: 1vw;
+}
+
+.input {
+  display: flex;
+}
+
+a {
+  color: orange;
+}
+
+.retroblue {
+  color: rgb(42, 123, 177);
+  text-shadow: 0 0 5px rgba(42, 143, 224, 0.6);
+}
+
+#input {
+  height: 4vh;
+  width: 98.5vh;
+  color: rgb(42, 123, 177);
+  background: transparent;
+  font-size: 2vh;
+  font-family: "Apple II";
+  border: none;
+  position: relative;
+  bottom: 0.175vh;
+  margin-left: .5vw;
+}
+
+span {
+  margin-left: 2vw;
+}
+
+#input:focus {
+  outline: none;
+}
+
+@keyframes blink {
+  0% {background: orange;}
+  49% {background: orange;}
+  60% {background: transparent;}
+  99% {background: transparent;}
+  100% {background: orange;}
+}

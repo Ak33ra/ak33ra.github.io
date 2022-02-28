@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IAP 3</title>
+    <link rel="stylesheet" href="../iap2/iap2styles.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    <link href="https://rawgit.com/shaneapen/Image-Preview-for-Links/master/image_preview_for_links.css" rel="stylesheet">
+    <script type="text/javascript">
+        $(function () {
+            $('#p1 a').miniPreview({ prefetch: 'pageload' });
+            $('#p2 a').miniPreview({ prefetch: 'parenthover' });
+            $('#p3 a').miniPreview({ prefetch: 'none' });
+        });
+    </script>
+    <script src="https://rawgit.com/shaneapen/Image-Preview-for-Links/master/image_preview_for_links.js"></script>
+    </head>
+<body>
+    <nav class = "navbar">
+        <div>
+            <a href="../index.html"><img src="../images/logo.PNG" class = "logo" alt="Logo"></a>
+        </div>
+        <ul class="nav-links">
+            <input type="checkbox" id = "checkbox_toggle">
+            <label for="checkbox_toggle" class = "hamburger">&#9776;</label>
+            <div class = "menu">
+                <li class = "iap1">
+                    <a href="../iap1/site.html">IAP1</a>
+                    <ul class = "dropdown">
+                        <li><a href="../iap1/site.html">Writeup</a></li>
+                    </ul>
+                </li>
+                <li class = "iap2">
+                    <a href="../iap2/iap2home.html">IAP2</a>
+                    <ul class = "dropdown">
+                        <li><a href="../iap2/article.html">Article</a></li>
+                        <li><a href="../iap2/quiz.html">Quiz</a></li>
+                        <li><a href="../iap2/bibliography.html">Bibliography</a></li>
+                    </ul>
+                </li>
+                <li class = "iap3">
+                    <a href="iap3home.html">IAP3</a>
+                    <ul class = "dropdown">
+                        <li><a href="game.html">Game</a></li>
+                        <li><a href="gamemindmap.html">Game Mindmap</a></li>
+                    </ul>
+                </li>
+            </div>
+        </ul>
+    </nav>
+    <div class = "center">
+        <div class = "container">
+            <div class = "box" id="p1">
+                <div class = "cover"><a href="game.html">Game</a></div>
+            </div>
+            <div class = "box" id="p1">
+                <div class = "cover"><a href="gamemindmap.html">Game Mindmap</a></div>
+            </div>
+            <div class = "box">
+                <div class = "cover"><p>Credits</p></div>
+                <div class = "content">
+                    <ul>
+                        <li>Retro game stylesheet from <a href="https://github.com/okaybenji">okaybenji</a> on github</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

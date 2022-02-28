@@ -1,0 +1,292 @@
+/* RESET/ UTILITIES */
+
+@import url('https://fonts.googleapis.com/css2?family=Hahmlet:wght@300&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Hahmlet', serif;
+}
+
+a {
+    text-decoration: none;
+}
+
+li {
+    list-style: none;
+}
+
+/* NAVBAR */
+
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    background-color: rgb(5, 105, 235);
+    color: white;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2)
+}
+
+.nav-links{
+    padding-right: 10px;
+}
+
+.nav-links a {
+    color: white;
+    padding: 14px 16px;
+    text-align: center;
+    display: block;
+}
+
+.logo {
+    max-width: 15%;
+    height: auto;
+    border-radius: 50%;
+}
+
+
+/* NAVBAR MENU */
+
+.menu {
+    display: flex;
+    gap: 1em;
+    font-size: 18px;
+}
+
+.menu li a:hover{
+    background-color: rgb(65, 139, 236);
+    border-radius: 5px;
+    transition: 0.3s ease;
+}
+
+.menu li {
+    padding: 10px 14px;
+}
+
+/* DROPDOWN MENU */
+
+.iap1 {
+    position: relative;
+}
+
+.iap2 {
+    position: relative;
+}
+
+.iap3 {
+    position: relative;
+}
+
+.dropdown {
+    padding: 1em 0;
+    position: absolute; /*WITH RESPECT TO PARENT*/
+    display: none;
+    border-radius: 8px;
+    top: 100%;
+    transform: translateX(-30%);
+    background-color: rgba(128, 128, 128, 0.5);
+    box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.2);
+}
+
+.dropdown li + li {
+    margin-top: 10px;
+}
+
+.dropdown li {
+    padding: 0.5em 1em;
+    width: 10em;
+    text-align: center;
+}
+
+.iap1:hover .dropdown{
+    display: block;
+}
+
+.iap2:hover .dropdown {
+    display: block;
+
+}
+
+.iap3:hover .dropdown{
+    display: block;
+}
+
+/* RESPONSIVE MENU */
+
+input[type=checkbox]{
+    display:none;
+}
+
+/*HAMBURGER MENU */
+
+.hamburger {
+    display: none;
+    font-size: 24px;
+    user-select: none;
+}
+
+/* MEDIA QUERIES, if screen is 768px or less */
+
+@media (max-width: 768px){
+    .menu {
+        display: none;
+        position: absolute;
+        background-color: gray;
+        top:auto;
+        right: 0%;
+        text-align: center;
+        padding: 16px 0;
+        box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.2);
+        z-index: 2;
+    }
+
+    .menu li:hover {
+        display: inline-block;
+        transition: 0.3s ease;
+    }
+
+    .menu li + li {
+        margin-top: 12px;
+    }
+
+    input[type=checkbox]:checked ~ .menu{
+        display: block;
+    }
+
+    input[type=checkbox]:checked ~ .hamburger{
+        color: gray;
+    }
+
+    .hamburger {
+        display: block;
+    }
+
+    .dropdown {
+        top: 0;
+        transform: translateX(-108%);
+        background-color: rgba(128, 128, 128, 0.5);
+        box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.2);
+    }
+
+}
+
+/* PROJECT BOXES */
+
+.center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    display: flex;
+    padding: 100px 0px;
+    width: 70%;
+    height: auto;
+    margin: auto;
+    justify-content: center;
+    align-items: center;
+}
+
+.container .box {
+    position: relative;
+    width: 25%;
+    height: 270px;
+    overflow: hidden;
+    border-radius: 10px;
+    margin: 20px;
+}
+
+.container .box .cover {
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgb(5, 105, 235);
+    transition: 0.5s;
+    z-index: 1;
+}
+
+.container .box:hover .cover {
+    top: 20px;
+    left: calc(50% - 40px);
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+}
+
+.container .box .cover h3{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 40px;
+    transition: 0.5s;
+    color: white;
+}
+
+.container .box:hover .cover h3{
+    font-size: 20px;
+}
+
+.container .box .content {
+    position: relative;
+    top: 100%;
+    align-items: center;
+    height: 100%;
+    text-align: center;
+    padding: 20px;
+    box-sizing: border-box;
+    transition: 0.5s;
+    opacity: 0;
+}
+
+.container .box:hover .content {
+    top: 10%;
+    opacity: 1;
+}
+
+.container .box .content ul li {
+    padding: 10px 4px;
+    background-color: rgb(5, 105, 235);
+    width: 100%;
+    margin: auto;
+    border-radius: 10px;
+}
+
+.container .box .content ul li:hover {
+    background-color: rgb(65, 139, 236);
+}
+
+.container .box .content ul li + li{
+    margin-top: 5px;
+}
+
+.container .box .content ul li a{
+    color: white;
+}
+
+@media (max-width: 768px){
+    
+    .container {
+        display: block;
+        padding: 100px 0px;
+        max-width: 70%;
+        height: auto;
+        margin: auto;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    .container .box {
+        position: relative;
+        width: 50%;
+        height: 270px;
+        overflow: hidden;
+        border-radius: 10px;
+        margin: 20px auto;
+    }
+}

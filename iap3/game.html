@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Game</title>
+</head>
+
+<body>
+  <nav class = "navbar">
+    <div>
+        <a href="../index.html"><img src="../images/logo.PNG" class = "logo" alt="Logo"></a>
+    </div>
+    <ul class="nav-links">
+        <input type="checkbox" id = "checkbox_toggle">
+        <label for="checkbox_toggle" class = "hamburger">&#9776;</label>
+        <div class = "menu">
+            <li class = "iap1">
+                <a href="../iap1/site.html">IAP1</a>
+                <ul class = "dropdown">
+                    <li><a href="../iap1/site.html">Writeup</a></li>
+                </ul>
+            </li>
+            <li class = "iap2">
+                <a href="../iap2/iap2home.html">IAP2</a>
+                <ul class = "dropdown">
+                    <li><a href="../iap2/article.html">Article</a></li>
+                    <li><a href="../iap2/quiz.html">Quiz</a></li>
+                    <li><a href="../iap2/bibliography.html">Bibliography</a></li>
+                </ul>
+            </li>
+            <li class = "iap3">
+                <a href="iap3home.html">IAP3</a>
+                <ul class = "dropdown">
+                  <li><a href="">Game</a></li>
+                  <li><a href="gamemindmap.html">Game Mindmap</a></li>
+                </ul>
+            </li>
+        </div>
+    </ul>
+</nav>
+  <!-- Game content -->
+  <div id="output"></div>
+
+  <!-- Player input -->
+  <div class="input">
+    <span class="ml-2">> </span><input id="input" autofocus spellcheck="false" autocomplete="off">
+  </div>
+
+  <!-- CSS styles -->
+  <link id="styles" rel="stylesheet" type="text/css" href="retro.css">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic+Coding:wght@700&family=Work+Sans&display=swap"
+    rel="stylesheet">
+
+  <!-- Include game engine -->
+  <script src="gamescript.js"></script>
+
+  <!-- Include game data ('disk') -->
+  <script src="story.js"></script>
+
+  <!-- Load disk into engine -->
+  <script>loadDisk(Disk);</script>
+</body>
+
+</html>
