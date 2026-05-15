@@ -167,12 +167,10 @@ All rights reserved. Content, code, and design on this site are not licensed for
 
 These are decisions we've consciously not made yet. Don't pick them silently — surface the choice when the need arises.
 
-- **Which exact fonts.** Self-hosted + variable is committed; the specific faces are open.
-- **Specific color palette.** Token *structure* is committed (`--bg`, `--fg`, `--accent`, etc.); concrete hex values are open.
 - **JS framework if/when interactivity demands it.** Preact and Solid are the candidates. React is not.
-- **`/now` page.** Not adopted yet.
+- **`/now` page.** Single-entry "what I'm focused on right now." Not adopted yet — revisit when the bio is settled and you want a lightweight live signal.
 - **CV page format.** Single page vs structured collection — decide when actually building it.
-- **RSS, sitemap, OG metadata strategy.** Will be added; not yet specified.
+- **RSS feed.** Deferred by intent (user not interested in subscribe-via-RSS as a use case); the sitemap and OG metadata are in place. Revisit if there's a future reason to feed posts to readers.
 
 ---
 
