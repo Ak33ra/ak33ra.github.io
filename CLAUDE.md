@@ -106,7 +106,11 @@ If steps 3 and 4 start looking identical across collections, refactor them into 
 - Reads palette from CSS variables so it follows the theme automatically.
 - Static radial-gradient fallback when `prefers-reduced-motion: reduce`, before the canvas inits, or under no-JS.
 - The rest of the site does not know how the hero is implemented. Swappable for a different visual without touching any other file.
-- **Multiple visual implementations live in `src/scripts/fluid-hero-<variant>.js`.** The component dynamically imports the chosen variant — only the selected variant's code ships to the browser. Current variants: `smoke` (stateless FBM noise), `liquid` (stateful advection through curl-noise velocity, ping-pong framebuffers).
+- **Multiple visual implementations live in `src/scripts/fluid-hero-<variant>.js`.** The component dynamically imports the chosen variant — only the selected variant's code ships to the browser. Current variants:
+  - `smoke` — stateless FBM noise; full-coverage cursor-warped smoke field
+  - `liquid` — stateful advection; cursor paints accent-colored trails into a blank field
+  - `ambient` — `liquid` plus an always-on wandering will-o-wisp source so the hero is alive at rest; smooth crossfade between wisp and cursor painting
+  - `lantern` — wisp is a moving light source above an invisible-by-default mist field; mist visibility = density × proximity × wisp speed; wisp motion parts/stirs the mist via drag + radial push (creates wakes and swirls)
 - **Structural changes get a new variant file.** Tuning happens by editing constants inside an existing variant; new approaches (full Navier–Stokes, particles, raymarched, etc.) get their own `fluid-hero-<name>.js` and a new value for the `variant` prop. Don't fork inside an existing variant.
 - **WebAssembly does not belong in the hero** — fluid sims run on the GPU. WASM is reserved for a future `/demos` page (or its own collection) where CPU-bound work actually benefits.
 

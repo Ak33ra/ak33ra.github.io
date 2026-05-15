@@ -67,6 +67,12 @@ const { variant = 'liquid' } = Astro.props;
       if (variant === 'smoke') {
         const { init_fluid_hero_smoke } = await import('../scripts/fluid-hero-smoke.js');
         init_fluid_hero_smoke(canvas as HTMLCanvasElement);
+      } else if (variant === 'ambient') {
+        const { init_fluid_hero_ambient } = await import('../scripts/fluid-hero-ambient.js');
+        init_fluid_hero_ambient(canvas as HTMLCanvasElement);
+      } else if (variant === 'lantern') {
+        const { init_fluid_hero_lantern } = await import('../scripts/fluid-hero-lantern.js');
+        init_fluid_hero_lantern(canvas as HTMLCanvasElement);
       } else {
         const { init_fluid_hero_liquid } = await import('../scripts/fluid-hero-liquid.js');
         init_fluid_hero_liquid(canvas as HTMLCanvasElement);
