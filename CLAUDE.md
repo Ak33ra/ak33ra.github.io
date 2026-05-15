@@ -86,6 +86,7 @@ Planned collections:
 - **`teaching/`** — courses TA'd at CMU: course_code, course_name, role, semesters[], last_taught (sortable), summary. Card-grid index. `TeachingCard` uses an `::after` overlay so the whole card is clickable while a separate "Course site →" link stays independently clickable (no nested anchors).
 - **`notes/`** — short, often-updated thoughts (digital-garden style). Lower formality than blog.
 - **`writing/`** — external articles, essays, and pieces published elsewhere. Mostly link entries with metadata. (Talks can be added as a sibling collection when there's something to put in it.)
+- **`news/`** — dated one-liners (awards, positions, milestones). Single `news.yaml` via the `file()` loader (keyed-object format, key = id), **not** glob/markdown — correct tool for one-liners. Home-page-only (recent 6, sorted by `date` desc); no detail pages, no `/news` archive (deferred until the list is long).
 
 Routes mirror collections: `/blog/<slug>`, `/projects/<slug>`, etc. Each collection has a dynamic route (`src/pages/<collection>/[...slug].astro`) and an index page.
 
@@ -138,6 +139,7 @@ Cover images live next to the content they describe, get optimized at build, tra
 - Layouts compose components; components are leaf-level.
 - Astro `<style>` blocks are scoped by default — keep them that way. Use `<style is:global>` only inside `global.css` imports or for very deliberate global overrides.
 - Markdown frontmatter is validated by Zod schemas. A missing or wrong field fails the build with a clear error — this is a feature, don't `.optional()` your way around it.
+- **Dates: always format in UTC.** `z.coerce.date()` parses `YYYY-MM-DD` frontmatter as midnight UTC. Human-formatting it without `timeZone: 'UTC'` rolls back a day in behind-UTC timezones (the build/dev machine is US-based). Use `date.toLocaleDateString('en-US', { …, timeZone: 'UTC' })` or `.toISOString().slice(0, 10)` — never `.toString()` or bare `.toLocaleDateString()`. This bug is silent and reintroduces easily.
 
 ## Repository layout
 

@@ -2,6 +2,16 @@
 import { Image } from 'astro:assets';
 import BaseLayout from './BaseLayout.astro';
 const { frontmatter } = Astro.props;
+
+// timeZone: 'UTC' — pub_date is parsed as midnight UTC by the schema; formatting
+// without this rolls back a day in behind-UTC timezones.
+const pub_date_label = frontmatter.pub_date.toLocaleDateString('en-US', {
+  month: 'short',
+  day: 'numeric',
+  year: 'numeric',
+  timeZone: 'UTC',
+});
+const pub_date_iso = frontmatter.pub_date.toISOString();
 ---
 <BaseLayout
   page_title={frontmatter.title}
@@ -12,7 +22,9 @@ const { frontmatter } = Astro.props;
   author={frontmatter.author}
 >
   <p><em>{frontmatter.description}</em></p>
-  <p class="post-meta">{frontmatter.pub_date.toString().slice(0,10)} · {frontmatter.author}</p>
+  <p class="post-meta">
+    <time datetime={pub_date_iso}>{pub_date_label}</time> · {frontmatter.author}
+  </p>
 
   {frontmatter.cover && (
     <Image

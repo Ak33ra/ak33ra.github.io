@@ -1,0 +1,18 @@
+# Home-page News items. Each top-level key is just an internal id — pick any
+# short slug. Order here doesn't matter; the News section sorts by `date`
+# descending. Add an item by copying a block. Optional `url:` makes it a link.
+#
+# Replace these examples with real items.
+
+harvard-seas:
+  date: 2026-05-18 
+  text: Starting research at Harvard SEAS.
+
+example-launch:
+  date: 2026-05-15
+  text: Launched this site. Thanks Claude!
+
+#example-seas:
+#  date: 2026-05-01
+#  text: Started research at Harvard SEAS.
+#  url: https://www.seas.harvard.edu/

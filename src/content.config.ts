@@ -1,5 +1,5 @@
 import { defineCollection } from 'astro:content';
-import { glob } from 'astro/loaders';
+import { glob, file } from 'astro/loaders';
 import { z } from 'astro/zod';
 
 // "folder/index.md" → "folder". Lets posts live in co-located folders with their
@@ -119,4 +119,16 @@ const writing = defineCollection({
   }),
 });
 
-export const collections = { blog, projects, teaching, notes, writing };
+// News: short dated one-liners (awards, positions, milestones) that don't warrant
+// a full post. Single YAML file, keyed-object format — each top-level key is the
+// entry id (internal only; news has no detail pages). Lowest-friction content type.
+const news = defineCollection({
+  loader: file('src/content/news/news.yaml'),
+  schema: z.object({
+    date: z.coerce.date(),
+    text: z.string(),
+    url: z.string().url().optional(),
+  }),
+});
+
+export const collections = { blog, projects, teaching, notes, writing, news };

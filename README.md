@@ -159,6 +159,19 @@ Body — course content, recitations, anecdotes.
 
 URL is `/teaching/<slug>/`. Cards render in a grid on `/teaching/`.
 
+### A news item
+
+Dated one-liners (awards, positions, milestones) shown on the home page. **Not a markdown file** — append to `src/content/news/news.yaml`:
+
+```yaml
+ta-418:                          # any short slug; internal id only
+  date: 2026-01-15
+  text: Began TAing 15-418/618.
+  url: https://www.cs.cmu.edu/~418/   # optional — makes the line a link
+```
+
+Sorted by `date` descending automatically; shows the most recent 6 on the home page. No detail page, no body — the line *is* the content. Lowest-friction content type.
+
 ### A note
 
 `src/content/notes/<slug>.md` — short, often-updated, lower formality.

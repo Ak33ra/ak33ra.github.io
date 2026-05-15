@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import FluidHero from '../components/FluidHero.astro';
 import MixedFeed from '../components/MixedFeed.astro';
+import News from '../components/News.astro';
 import { Image } from 'astro:assets';
 import headshot from '../assets/IMG_5265.jpeg';
 
@@ -26,6 +27,11 @@ const page_title = 'Akira van de Groenendaal';
     It should have some CS and systems stuff - use your imagination (or see the about page).
     Thanks!
     </p>
+  </section>
+
+  <section class="news-section" aria-label="News">
+    <h2>News</h2>
+    <News limit={6} />
   </section>
 
   <section class="recent" aria-label="Recent">
@@ -90,10 +96,12 @@ const page_title = 'Akira van de Groenendaal';
     }
   }
 
+  .news-section,
   .recent {
     margin-block: var(--space-12);
   }
 
+  .news-section h2,
   .recent h2 {
     margin: 0 0 var(--space-4);
     font-size: var(--text-2xl);
