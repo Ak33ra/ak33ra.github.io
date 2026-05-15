@@ -1,0 +1,101 @@
+---
+/**
+ * Card layout for a single project on the projects index page.
+ * Renders: optional cover, title, role + date range, summary, stack chips.
+ * Whole card is clickable (wrapped in a single <a>).
+ */
+
+import { Image } from 'astro:assets';
+
+const { project } = Astro.props;
+
+const start_year = project.data.start_date.toISOString().slice(0, 4);
+const end_year = project.data.end_date
+  ? project.data.end_date.toISOString().slice(0, 4)
+  : 'ongoing';
+const date_range = start_year === end_year ? start_year : `${start_year} – ${end_year}`;
+---
+<article class="project-card">
+  <a href={`/projects/${project.id}`} class="project-card__link">
+    {project.data.cover && (
+      <Image
+        src={project.data.cover}
+        alt={project.data.cover_alt ?? ''}
+        width={640}
+        class="project-card__cover"
+      />
+    )}
+    <div class="project-card__body">
+      <h3 class="project-card__title">{project.data.title}</h3>
+      <p class="project-card__meta">{project.data.role} · {date_range}</p>
+      <p class="project-card__summary">{project.data.summary}</p>
+      {project.data.stack && project.data.stack.length > 0 && (
+        <ul class="chip-list project-card__chips">
+          {project.data.stack.map((tech: string) => <li class="chip">{tech}</li>)}
+        </ul>
+      )}
+    </div>
+  </a>
+</article>
+
+<style>
+  .project-card {
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    transition: border-color var(--transition-fast);
+  }
+
+  .project-card:hover,
+  .project-card:focus-within {
+    border-color: var(--color-fg-muted);
+  }
+
+  .project-card__link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .project-card__cover {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .project-card__body {
+    padding: var(--space-6);
+  }
+
+  .project-card__title {
+    margin: 0 0 var(--space-1);
+    font-family: var(--font-display);
+    font-size: var(--text-2xl);
+    font-weight: 600;
+    line-height: var(--leading-tight);
+    color: var(--color-fg);
+    transition: color var(--transition-fast);
+  }
+
+  .project-card:hover .project-card__title,
+  .project-card:focus-within .project-card__title {
+    color: var(--color-accent);
+  }
+
+  .project-card__meta {
+    margin: 0 0 var(--space-3);
+    color: var(--color-fg-muted);
+    font-size: var(--text-sm);
+  }
+
+  .project-card__summary {
+    margin: 0 0 var(--space-4);
+    color: var(--color-fg);
+  }
+
+  .project-card__chips {
+    margin: 0;
+  }
+</style>

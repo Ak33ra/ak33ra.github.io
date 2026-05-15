@@ -1,0 +1,126 @@
+---
+/**
+ * Uniform list-row layout for content entries. Used by:
+ *   - per-collection index pages (blog, notes, writing) → no `type` field, 2-col grid
+ *   - MixedFeed on the home page                       → with `type` field, 3-col grid
+ *
+ * The `:has(.entry-list__type)` selector switches between column layouts based on
+ * whether any item has a type label, so callers don't pick a variant — they just
+ * pass items, and the layout adapts.
+ */
+
+interface Item {
+  url: string;
+  title: string;
+  date: Date;
+  summary?: string;
+  type?: string;      // optional label rendered in mono on the left ("blog" / "project" / …)
+  meta?: string;      // optional suffix after date ("· Wired", "· Q1 2026")
+}
+
+interface Props {
+  items: Item[];
+}
+
+const { items } = Astro.props as Props;
+---
+<ul class="entry-list">
+  {items.map((item) => (
+    <li class="entry-list__item">
+      {item.type && <span class="entry-list__type">{item.type}</span>}
+      <div class="entry-list__body">
+        <h3 class="entry-list__title"><a href={item.url}>{item.title}</a></h3>
+        {item.summary && <p class="entry-list__summary">{item.summary}</p>}
+      </div>
+      <time class="entry-list__date" datetime={item.date.toISOString()}>
+        {item.date.toISOString().slice(0, 10)}{item.meta && ` · ${item.meta}`}
+      </time>
+    </li>
+  ))}
+</ul>
+
+<style>
+  .entry-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .entry-list__item {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: var(--space-4);
+    align-items: baseline;
+    padding-block: var(--space-4);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  /* When any item carries a type label, switch to 3-col layout. */
+  .entry-list__item:has(.entry-list__type) {
+    grid-template-columns: 6rem 1fr auto;
+  }
+
+  .entry-list__item:last-child {
+    border-bottom: none;
+  }
+
+  .entry-list__type {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-fg-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .entry-list__title {
+    margin: 0 0 var(--space-1);
+    font-family: var(--font-body);
+    font-size: var(--text-lg);
+    font-weight: 600;
+    line-height: var(--leading-tight);
+  }
+
+  .entry-list__title a {
+    text-decoration: none;
+    color: var(--color-fg);
+  }
+
+  .entry-list__title a:hover,
+  .entry-list__title a:focus-visible {
+    color: var(--color-accent);
+  }
+
+  .entry-list__summary {
+    margin: 0;
+    color: var(--color-fg-muted);
+    font-size: var(--text-sm);
+  }
+
+  .entry-list__date {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-fg-muted);
+    white-space: nowrap;
+  }
+
+  @media (max-width: 640px) {
+    .entry-list__item,
+    .entry-list__item:has(.entry-list__type) {
+      grid-template-columns: 1fr auto;
+    }
+    .entry-list__type {
+      grid-column: 1;
+      grid-row: 1;
+    }
+    .entry-list__date {
+      grid-column: 2;
+      grid-row: 1;
+    }
+    .entry-list__body {
+      grid-column: 1 / -1;
+      grid-row: 2;
+    }
+  }
+</style>

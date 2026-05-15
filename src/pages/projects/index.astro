@@ -1,41 +1,27 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
 
 const all_projects = await getCollection('projects');
 const sorted = all_projects.sort(
   (a, b) => b.data.start_date.getTime() - a.data.start_date.getTime()
 );
+
 const page_title = "Projects";
 const description = "Projects — selected work and side experiments.";
 ---
 <BaseLayout page_title={page_title} description={description} wide>
-  <ul class="project-list">
-    {sorted.map((project) => (
-      <li class="project-list__item">
-        <h2><a href={`/projects/${project.id}`}>{project.data.title}</a></h2>
-        <p class="project-list__meta">{project.data.role}</p>
-        <p>{project.data.summary}</p>
-      </li>
-    ))}
-  </ul>
+  <div class="project-grid">
+    {sorted.map((project) => <ProjectCard project={project} />)}
+  </div>
 </BaseLayout>
+
 <style>
-  .project-list {
-    list-style: none;
-    padding: 0;
+  .project-grid {
     display: grid;
-    gap: var(--space-8);
-  }
-  .project-list__item h2 {
-    margin: 0 0 var(--space-2);
-  }
-  .project-list__item h2 a {
-    text-decoration: none;
-  }
-  .project-list__meta {
-    color: var(--color-fg-muted);
-    font-size: var(--text-sm);
-    margin: 0 0 var(--space-2);
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: var(--space-6);
+    margin-block: var(--space-6);
   }
 </style>

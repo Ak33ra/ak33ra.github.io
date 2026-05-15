@@ -1,40 +1,24 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import EntryList from '../../components/EntryList.astro';
 
 const all_notes = await getCollection('notes');
-const sorted = all_notes.sort(
-  (a, b) => b.data.pub_date.getTime() - a.data.pub_date.getTime()
-);
+const items = all_notes
+  .sort((a, b) => {
+    const a_date = a.data.updated_date ?? a.data.pub_date;
+    const b_date = b.data.updated_date ?? b.data.pub_date;
+    return b_date.getTime() - a_date.getTime();
+  })
+  .map((n) => ({
+    title: n.data.title,
+    date: n.data.updated_date ?? n.data.pub_date,
+    url: `/notes/${n.id}`,
+  }));
+
 const page_title = "Notes";
 const description = "Short, often-updated notes — digital-garden style.";
 ---
 <BaseLayout page_title={page_title} description={description} wide>
-  <ul class="entry-list">
-    {sorted.map((note) => (
-      <li>
-        <a href={`/notes/${note.id}`}>{note.data.title}</a>
-        <span class="entry-list__meta">{note.data.pub_date.toISOString().slice(0, 10)}</span>
-      </li>
-    ))}
-  </ul>
+  <EntryList items={items} />
 </BaseLayout>
-<style>
-  .entry-list {
-    list-style: none;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-  }
-  .entry-list li {
-    display: flex;
-    justify-content: space-between;
-    gap: var(--space-4);
-    padding-block: var(--space-3);
-    border-bottom: 1px solid var(--color-border);
-  }
-  .entry-list__meta {
-    color: var(--color-fg-muted);
-    font-size: var(--text-sm);
-  }
-</style>

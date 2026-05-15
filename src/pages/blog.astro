@@ -1,14 +1,21 @@
 ---
 import { getCollection } from 'astro:content';
-import BaseLayout from '../layouts/BaseLayout.astro'
-import BlogPost from '../components/BlogPost.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import EntryList from '../components/EntryList.astro';
 
 const all_posts = await getCollection('blog');
+const items = all_posts
+  .sort((a, b) => b.data.pub_date.getTime() - a.data.pub_date.getTime())
+  .map((p) => ({
+    title: p.data.title,
+    date: p.data.pub_date,
+    url: `/blog/${p.id}`,
+    summary: p.data.description,
+  }));
+
 const page_title = "Blog";
 const description = "Long-form posts on engineering, systems, and curiosity.";
 ---
 <BaseLayout page_title={page_title} description={description} wide>
-  <ul>
-    {all_posts.map((post) => <BlogPost url={`/blog/${post.id}`} title={post.data.title} />)}
-  </ul>
+  <EntryList items={items} />
 </BaseLayout>
