@@ -29,7 +29,7 @@ export default defineConfig({
       name: 'Fraunces',
       cssVariable: '--font-fraunces',
       provider: fontProviders.fontsource(),
-      weights: [400, 600],
+      weights: [600],
       styles: ['normal'],
       subsets: ['latin'],
       fallbacks: ['ui-serif', 'Georgia', 'serif'],
