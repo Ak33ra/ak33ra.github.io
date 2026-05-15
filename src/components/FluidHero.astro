@@ -1,0 +1,64 @@
+---
+---
+<section class="fluid-hero">
+  <canvas class="fluid-hero__canvas" data-fluid-hero aria-hidden="true"></canvas>
+  <div class="fluid-hero__static" aria-hidden="true"></div>
+  <div class="fluid-hero__content">
+    <slot />
+  </div>
+</section>
+
+<style>
+  .fluid-hero {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--radius-lg);
+    height: clamp(360px, 58vh, 600px);
+    margin-block: var(--space-8);
+    background: var(--color-code-bg);
+    isolation: isolate;
+  }
+
+  .fluid-hero__canvas,
+  .fluid-hero__static {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  .fluid-hero__canvas {
+    z-index: 1;
+  }
+
+  /* Static fallback: shows on no-JS, before canvas inits, and under prefers-reduced-motion. */
+  .fluid-hero__static {
+    z-index: 0;
+    background:
+      radial-gradient(80% 80% at 30% 100%, color-mix(in oklab, var(--color-accent) 40%, transparent), transparent 70%),
+      radial-gradient(60% 60% at 80% 30%, color-mix(in oklab, var(--color-accent) 20%, transparent), transparent 70%),
+      var(--color-bg);
+  }
+
+  .fluid-hero__content {
+    position: relative;
+    z-index: 2;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: var(--space-8);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .fluid-hero__canvas { display: none; }
+  }
+</style>
+
+<script>
+  import { init_fluid_hero } from '../scripts/fluid-hero.js';
+  document.querySelectorAll('[data-fluid-hero]').forEach((el) => {
+    init_fluid_hero(el as HTMLCanvasElement);
+  });
+</script>

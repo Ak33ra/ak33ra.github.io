@@ -1,10 +1,30 @@
 ---
 import Navigation from "./Navigation.astro";
 import Menu from "./Menu.astro";
+import ThemeToggle from "./ThemeToggle.astro";
 ---
 <header>
-	<nav>
-		<Menu />
-		<Navigation/>
-	<nav/>
+  <nav class="primary-nav">
+    <Menu />
+    <Navigation />
+  </nav>
+  <ThemeToggle />
 </header>
+<style>
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    flex-wrap: wrap;
+    padding-block: var(--space-4);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .primary-nav {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    flex-wrap: wrap;
+  }
+</style>

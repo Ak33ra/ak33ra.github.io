@@ -1,6 +1,6 @@
 ---
 title: 'Test Post'
-pubDate: 2026-03-15
+pub_date: 2026-03-15
 description: 'This is the first post of my new Astro blog.'
 author: 'Akira'
 image:

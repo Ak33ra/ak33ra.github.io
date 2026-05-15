@@ -1,0 +1,34 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const writings = await getCollection('writing');
+  return writings.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const pub = entry.data.pub_date.toISOString().slice(0, 10);
+---
+<BaseLayout page_title={entry.data.title}>
+  <p class="post-meta">{pub} · published in <strong>{entry.data.venue}</strong></p>
+
+  {entry.data.summary && <p><em>{entry.data.summary}</em></p>}
+
+  <p><a class="external-link" href={entry.data.url}>Read on {entry.data.venue} →</a></p>
+
+  <Content />
+</BaseLayout>
+<style>
+  .post-meta {
+    color: var(--color-fg-muted);
+    font-size: var(--text-sm);
+  }
+  .external-link {
+    font-size: var(--text-lg);
+  }
+</style>

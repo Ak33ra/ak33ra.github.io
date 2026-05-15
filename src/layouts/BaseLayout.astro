@@ -1,24 +1,39 @@
 ---
+import { Font } from 'astro:assets';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import '../styles/global.css';
-const {page_title} = Astro.props;
+const { page_title, wide = false, no_title = false } = Astro.props;
 ---
 <html lang="en">
   <head>
     <meta charset="utf-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
+    <Font cssVariable="--font-geist-sans" preload />
+    <Font cssVariable="--font-fraunces" preload />
+    <Font cssVariable="--font-geist-mono" />
     <title>{page_title}</title>
+    <script is:inline>
+      // Apply persisted theme synchronously to avoid flash-of-wrong-theme.
+      const stored = localStorage.getItem('theme');
+      if (stored === 'light' || stored === 'dark') {
+        document.documentElement.dataset.theme = stored;
+      }
+    </script>
   </head>
   <body>
     <Header />
-    <h1>{page_title}</h1>
-    <slot />
+    <main data-width={wide ? "wide" : undefined}>
+      {!no_title && <h1>{page_title}</h1>}
+      <slot />
+    </main>
     <Footer />
     <script>
       import "../scripts/menu.js";
+      import "../scripts/theme.js";
     </script>
   </body>
 </html>

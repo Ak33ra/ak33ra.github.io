@@ -1,0 +1,27 @@
+---
+---
+<button
+  type="button"
+  class="theme-toggle"
+  aria-label="Toggle color theme"
+  data-theme-toggle
+>
+  <span aria-hidden="true">◐</span>
+</button>
+<style>
+  .theme-toggle {
+    background: none;
+    border: 1px solid var(--color-border);
+    color: var(--color-fg);
+    border-radius: var(--radius-sm);
+    padding: var(--space-2) var(--space-3);
+    cursor: pointer;
+    font-size: var(--text-base);
+    line-height: 1;
+    transition: border-color var(--transition-fast), background var(--transition-fast);
+  }
+  .theme-toggle:hover {
+    border-color: var(--color-fg-muted);
+    background: var(--color-code-bg);
+  }
+</style>

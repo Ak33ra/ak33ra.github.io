@@ -2,38 +2,23 @@
 import BaseLayout from './BaseLayout.astro';
 const { frontmatter } = Astro.props;
 ---
-<BaseLayout pageTitle={frontmatter.title}>
+<BaseLayout page_title={frontmatter.title}>
   <p><em>{frontmatter.description}</em></p>
-  <p>{frontmatter.pubDate.toString().slice(0,10)}</p>
-
-  <p>Written by: {frontmatter.author}</p>
+  <p class="post-meta">{frontmatter.pub_date.toString().slice(0,10)} · {frontmatter.author}</p>
 
   <img src={frontmatter.image.url} width="300" alt={frontmatter.image.alt} />
 
-  <div class="tags">
+  <ul class="chip-list">
     {frontmatter.tags.map((tag: string) => (
-      <p class="tag"><a href={`/tags/${tag}`}>{tag}</a></p>
+      <li class="chip"><a href={`/tags/${tag}`}>{tag}</a></li>
     ))}
-  </div>
+  </ul>
 
   <slot />
 </BaseLayout>
 <style>
-  a {
-    color: #00539F;
-  }
-
-  .tags {
-    display: flex;
-    flex-wrap: wrap;
-  }
-
-  .tag {
-    margin: 0.25em;
-    border: dotted 1px #a1a1a1;
-    border-radius: .5em;
-    padding: .5em 1em;
-    font-size: 1.15em;
-    background-color: #F8FCFD;
+  .post-meta {
+    color: var(--color-fg-muted);
+    font-size: var(--text-sm);
   }
 </style>

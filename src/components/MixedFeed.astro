@@ -1,0 +1,150 @@
+---
+import { getCollection } from 'astro:content';
+
+type FeedType = 'blog' | 'project' | 'note' | 'writing';
+type FeedItem = {
+  type: FeedType;
+  title: string;
+  date: Date;
+  url: string;
+  summary: string;
+};
+
+const [blog, projects, notes, writing] = await Promise.all([
+  getCollection('blog'),
+  getCollection('projects'),
+  getCollection('notes'),
+  getCollection('writing'),
+]);
+
+const items: FeedItem[] = [
+  ...blog.map((p) => ({
+    type: 'blog' as const,
+    title: p.data.title,
+    date: p.data.pub_date,
+    url: `/blog/${p.id}`,
+    summary: p.data.description,
+  })),
+  ...projects.map((p) => ({
+    type: 'project' as const,
+    title: p.data.title,
+    date: p.data.end_date ?? p.data.start_date,
+    url: `/projects/${p.id}`,
+    summary: p.data.summary,
+  })),
+  ...notes.map((n) => ({
+    type: 'note' as const,
+    title: n.data.title,
+    date: n.data.updated_date ?? n.data.pub_date,
+    url: `/notes/${n.id}`,
+    summary: '',
+  })),
+  ...writing.map((w) => ({
+    type: 'writing' as const,
+    title: w.data.title,
+    date: w.data.pub_date,
+    url: `/writing/${w.id}`,
+    summary: w.data.summary ?? `Published in ${w.data.venue}`,
+  })),
+];
+
+items.sort((a, b) => b.date.getTime() - a.date.getTime());
+
+const { limit = 10 } = Astro.props;
+const recent = items.slice(0, limit);
+---
+
+<ul class="mixed-feed">
+  {recent.map((item) => (
+    <li class="feed-item">
+      <span class="feed-item__type">{item.type}</span>
+      <div class="feed-item__body">
+        <h3 class="feed-item__title"><a href={item.url}>{item.title}</a></h3>
+        {item.summary && <p class="feed-item__summary">{item.summary}</p>}
+      </div>
+      <time class="feed-item__date" datetime={item.date.toISOString()}>
+        {item.date.toISOString().slice(0, 10)}
+      </time>
+    </li>
+  ))}
+</ul>
+
+<style>
+  .mixed-feed {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .feed-item {
+    display: grid;
+    grid-template-columns: 6rem 1fr auto;
+    gap: var(--space-4);
+    align-items: baseline;
+    padding-block: var(--space-4);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .feed-item:last-child {
+    border-bottom: none;
+  }
+
+  .feed-item__type {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-fg-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .feed-item__title {
+    margin: 0 0 var(--space-1);
+    font-family: var(--font-body);
+    font-size: var(--text-lg);
+    font-weight: 600;
+    line-height: var(--leading-tight);
+  }
+
+  .feed-item__title a {
+    text-decoration: none;
+    color: var(--color-fg);
+  }
+
+  .feed-item__title a:hover,
+  .feed-item__title a:focus-visible {
+    color: var(--color-accent);
+  }
+
+  .feed-item__summary {
+    margin: 0;
+    color: var(--color-fg-muted);
+    font-size: var(--text-sm);
+  }
+
+  .feed-item__date {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-fg-muted);
+    white-space: nowrap;
+  }
+
+  @media (max-width: 640px) {
+    .feed-item {
+      grid-template-columns: 1fr auto;
+    }
+    .feed-item__type {
+      grid-column: 1;
+      grid-row: 1;
+    }
+    .feed-item__date {
+      grid-column: 2;
+      grid-row: 1;
+    }
+    .feed-item__body {
+      grid-column: 1 / -1;
+      grid-row: 2;
+    }
+  }
+</style>

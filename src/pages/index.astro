@@ -1,7 +1,64 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-const page_title = 'Home Page';
+import FluidHero from '../components/FluidHero.astro';
+import MixedFeed from '../components/MixedFeed.astro';
+
+const page_title = 'Akira van de Groenendaal';
 ---
-<BaseLayout page_title={page_title}>
-  <h2>Yessir</h2>
+<BaseLayout page_title={page_title} wide no_title>
+  <FluidHero>
+    <h1 class="hero-name">Akira van de Groenendaal</h1>
+    <p class="hero-tagline">CMU undergrad / computer science.</p>
+  </FluidHero>
+
+  <section class="intro" aria-label="Introduction">
+    <!-- PLACEHOLDER intro paragraph. Replace with your own voice. -->
+    <p>
+      Scientist, computer-science researcher, and engineer — interested in the spaces where rigorous
+      systems meet creative work. Building tools, exploring ideas, and occasionally writing about both.
+    </p>
+  </section>
+
+  <section class="recent" aria-label="Recent">
+    <h2>Recent</h2>
+    <MixedFeed limit={10} />
+  </section>
 </BaseLayout>
+
+<style>
+  .hero-name {
+    margin: 0 0 var(--space-2);
+    font-family: var(--font-display);
+    font-size: clamp(var(--text-3xl), 5vw, var(--text-5xl));
+    font-weight: 600;
+    line-height: var(--leading-tight);
+    color: var(--color-fg);
+  }
+
+  .hero-tagline {
+    margin: 0;
+    font-family: var(--font-body);
+    font-size: var(--text-lg);
+    color: var(--color-fg-muted);
+  }
+
+  .intro {
+    max-width: 60ch;
+    margin-block: var(--space-8);
+  }
+
+  .intro p {
+    font-size: var(--text-lg);
+    line-height: var(--leading-loose);
+    color: var(--color-fg);
+  }
+
+  .recent {
+    margin-block: var(--space-12);
+  }
+
+  .recent h2 {
+    margin: 0 0 var(--space-4);
+    font-size: var(--text-2xl);
+  }
+</style>

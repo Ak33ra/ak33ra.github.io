@@ -1,0 +1,36 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const notes = await getCollection('notes');
+  return notes.map((note) => ({
+    params: { slug: note.id },
+    props: { note },
+  }));
+}
+
+const { note } = Astro.props;
+const { Content } = await render(note);
+const pub = note.data.pub_date.toISOString().slice(0, 10);
+const updated = note.data.updated_date?.toISOString().slice(0, 10);
+---
+<BaseLayout page_title={note.data.title}>
+  <p class="post-meta">
+    {pub}{updated && ` · updated ${updated}`}
+  </p>
+
+  {note.data.tags && note.data.tags.length > 0 && (
+    <ul class="chip-list">
+      {note.data.tags.map((tag) => <li class="chip">{tag}</li>)}
+    </ul>
+  )}
+
+  <Content />
+</BaseLayout>
+<style>
+  .post-meta {
+    color: var(--color-fg-muted);
+    font-size: var(--text-sm);
+  }
+</style>

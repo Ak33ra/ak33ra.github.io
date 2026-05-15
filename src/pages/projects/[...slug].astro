@@ -1,0 +1,52 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects');
+  return projects.map((project) => ({
+    params: { slug: project.id },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props;
+const { Content } = await render(project);
+const start = project.data.start_date.toISOString().slice(0, 10);
+const end = project.data.end_date
+  ? project.data.end_date.toISOString().slice(0, 10)
+  : 'ongoing';
+---
+<BaseLayout page_title={project.data.title}>
+  <p class="post-meta">{project.data.role} · {start} – {end}</p>
+  <p><em>{project.data.summary}</em></p>
+
+  {project.data.stack.length > 0 && (
+    <ul class="chip-list">
+      {project.data.stack.map((tech) => <li class="chip">{tech}</li>)}
+    </ul>
+  )}
+
+  {project.data.links && project.data.links.length > 0 && (
+    <ul class="links">
+      {project.data.links.map((link) => (
+        <li><a href={link.url}>{link.label} →</a></li>
+      ))}
+    </ul>
+  )}
+
+  <Content />
+</BaseLayout>
+<style>
+  .post-meta {
+    color: var(--color-fg-muted);
+    font-size: var(--text-sm);
+  }
+  .links {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    gap: var(--space-4);
+    margin: var(--space-4) 0;
+  }
+</style>
