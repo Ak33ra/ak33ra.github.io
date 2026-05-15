@@ -102,10 +102,12 @@ If steps 3 and 4 start looking identical across collections, refactor them into 
 
 ## Landing page hero
 
-- **WebGL fluid shader**, encapsulated as a single component (`<FluidHero client:visible />`).
+- **WebGL hero**, encapsulated as a single component (`<FluidHero variant="..." />`).
 - Reads palette from CSS variables so it follows the theme automatically.
-- Static fallback image when `prefers-reduced-motion: reduce`.
+- Static radial-gradient fallback when `prefers-reduced-motion: reduce`, before the canvas inits, or under no-JS.
 - The rest of the site does not know how the hero is implemented. Swappable for a different visual without touching any other file.
+- **Multiple visual implementations live in `src/scripts/fluid-hero-<variant>.js`.** The component dynamically imports the chosen variant — only the selected variant's code ships to the browser. Current variants: `smoke` (stateless FBM noise), `liquid` (stateful advection through curl-noise velocity, ping-pong framebuffers).
+- **Structural changes get a new variant file.** Tuning happens by editing constants inside an existing variant; new approaches (full Navier–Stokes, particles, raymarched, etc.) get their own `fluid-hero-<name>.js` and a new value for the `variant` prop. Don't fork inside an existing variant.
 - **WebAssembly does not belong in the hero** — fluid sims run on the GPU. WASM is reserved for a future `/demos` page (or its own collection) where CPU-bound work actually benefits.
 
 ---

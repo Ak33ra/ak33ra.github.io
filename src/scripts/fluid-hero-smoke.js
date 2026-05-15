@@ -122,7 +122,7 @@ function compile_shader(gl, type, source) {
   return shader;
 }
 
-export function init_fluid_hero(canvas) {
+export function init_fluid_hero_smoke(canvas) {
   if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
     canvas.style.display = 'none';
     return;
