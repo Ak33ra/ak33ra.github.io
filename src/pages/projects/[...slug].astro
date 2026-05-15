@@ -21,7 +21,7 @@ const end = project.data.end_date
   page_title={project.data.title}
   description={project.data.summary}
   og_type="article"
-  og_image={project.data.image?.url}
+  og_image={project.data.cover?.src}
   pub_date={project.data.start_date}
 >
   <p class="post-meta">{project.data.role} · {start} – {end}</p>

@@ -2,44 +2,74 @@ import { defineCollection } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
 
+// "folder/index.md" → "folder". Lets posts live in co-located folders with their
+// assets (cover.jpg, screenshots, etc.) without producing /collection/folder/index/
+// URLs. Flat .md files (no folder) work unchanged.
+const id_from_path = (entry: string) =>
+  entry.replace(/\.md$/, '').replace(/\/index$/, '');
+
 const blog = defineCollection({
-  loader: glob({ pattern: '**/*.md', base: './src/content/blog' }),
-  schema: z.object({
-    title: z.string(),
-    pub_date: z.coerce.date(),
-    description: z.string(),
-    author: z.string(),
-    image: z.object({
-      url: z.string(),
-      alt: z.string(),
-    }),
-    tags: z.array(z.string()),
+  loader: glob({
+    pattern: '**/*.md',
+    base: './src/content/blog',
+    generateId: ({ entry }) => id_from_path(entry),
   }),
+  schema: ({ image }) =>
+    z
+      .object({
+        title: z.string(),
+        pub_date: z.coerce.date(),
+        description: z.string(),
+        author: z.string(),
+        cover: image().optional(),
+        cover_alt: z.string().optional(),
+        tags: z.array(z.string()),
+      })
+      .refine(
+        (data) => !data.cover || Boolean(data.cover_alt),
+        { message: 'cover_alt is required when cover is provided' }
+      ),
 });
 
 const projects = defineCollection({
-  loader: glob({ pattern: '**/*.md', base: './src/content/projects' }),
-  schema: z.object({
-    title: z.string(),
-    summary: z.string(),
-    role: z.string(),
-    stack: z.array(z.string()),
-    start_date: z.coerce.date(),
-    end_date: z.coerce.date().optional(),
-    links: z.array(z.object({
-      label: z.string(),
-      url: z.string().url(),
-    })).optional(),
-    image: z.object({
-      url: z.string(),
-      alt: z.string(),
-    }).optional(),
-    featured: z.boolean().optional(),
+  loader: glob({
+    pattern: '**/*.md',
+    base: './src/content/projects',
+    generateId: ({ entry }) => id_from_path(entry),
   }),
+  schema: ({ image }) =>
+    z
+      .object({
+        title: z.string(),
+        summary: z.string(),
+        role: z.string(),
+        stack: z.array(z.string()),
+        start_date: z.coerce.date(),
+        end_date: z.coerce.date().optional(),
+        links: z
+          .array(
+            z.object({
+              label: z.string(),
+              url: z.string().url(),
+            })
+          )
+          .optional(),
+        cover: image().optional(),
+        cover_alt: z.string().optional(),
+        featured: z.boolean().optional(),
+      })
+      .refine(
+        (data) => !data.cover || Boolean(data.cover_alt),
+        { message: 'cover_alt is required when cover is provided' }
+      ),
 });
 
 const notes = defineCollection({
-  loader: glob({ pattern: '**/*.md', base: './src/content/notes' }),
+  loader: glob({
+    pattern: '**/*.md',
+    base: './src/content/notes',
+    generateId: ({ entry }) => id_from_path(entry),
+  }),
   schema: z.object({
     title: z.string(),
     pub_date: z.coerce.date(),
@@ -49,7 +79,11 @@ const notes = defineCollection({
 });
 
 const writing = defineCollection({
-  loader: glob({ pattern: '**/*.md', base: './src/content/writing' }),
+  loader: glob({
+    pattern: '**/*.md',
+    base: './src/content/writing',
+    generateId: ({ entry }) => id_from_path(entry),
+  }),
   schema: z.object({
     title: z.string(),
     pub_date: z.coerce.date(),

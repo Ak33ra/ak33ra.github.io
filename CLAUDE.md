@@ -100,6 +100,19 @@ Adding a new content type is intentionally a mechanical, ~5-step operation. Futu
 
 If steps 3 and 4 start looking identical across collections, refactor them into a generic `<CollectionList>` / shared dynamic route before adding a third — don't let the duplication compound.
 
+## Image strategy
+
+Cover images live next to the content they describe, get optimized at build, travel with their post when content is restructured.
+
+- **Schema**: collections with cover images use Astro's `image()` helper (`schema: ({ image }) => z.object({ ... cover: image().optional(), cover_alt: z.string().optional() })`). A `.refine()` on the schema rejects content that has a `cover` without `cover_alt` — schema-enforced accessibility.
+- **Where files live**: cover and inline body images live in a co-located folder per post — `src/content/blog/<slug>/index.md` next to `src/content/blog/<slug>/cover.jpg`. The glob loader's `generateId` maps `<slug>/index.md` → `<slug>` so URLs stay clean. Flat `.md` files (no folder, no images) still work for posts that don't need images.
+- **Markdown body images**: reference relative paths from the `.md` file: `![alt](./screenshot.png)`. Astro resolves and optimizes.
+- **Optimization**: all local images go through `astro:assets` and ship as WebP at the requested width. Source files (jpg/png) are typically ~10–30× larger than what ships.
+- **Remote images**: cover images **must** be local — the schema's `image()` helper rejects remote URLs. Body images may reference remote URLs when there's a real reason (screenshots of external sites, etc.), but local-first is the default.
+- **Rendering**: cover images render via `<Image src={data.cover} alt={data.cover_alt} width={...} />` from `astro:assets`. Don't use raw `<img>` for content images — you lose optimization and lazy-load defaults.
+- **Site-wide OG image**: `public/og.png` (1200×630) when ready. Reference from the home page's `og_image` prop. Pages without their own `og_image` currently emit no preview image (better than a broken one).
+- **Alt text discipline**: required wherever images appear via the schema's `.refine()`. Decorative-only images may use empty `alt=""` but the field must be present.
+
 ## Landing page hero
 
 - **WebGL hero**, encapsulated as a single component (`<FluidHero variant="..." />`).
@@ -160,7 +173,6 @@ These are decisions we've consciously not made yet. Don't pick them silently —
 - **`/now` page.** Not adopted yet.
 - **CV page format.** Single page vs structured collection — decide when actually building it.
 - **RSS, sitemap, OG metadata strategy.** Will be added; not yet specified.
-- **Image strategy.** Will use `astro:assets` for content-collection images; remote-image allow-list to be defined.
 
 ---
 

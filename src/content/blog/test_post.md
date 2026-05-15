@@ -3,9 +3,6 @@ title: 'Test Post'
 pub_date: 2026-03-15
 description: 'This is the first post of my new Astro blog.'
 author: 'Akira'
-image:
-    url: 'https://docs.astro.build/assets/rose.webp'
-    alt: 'The Astro logo on a dark background with a pink glow.'
 tags: ["astro", "blogging", "learning in public"]
 ---
 # My First Blog Post
