@@ -1,0 +1,22 @@
+---
+/**
+ * Generic layout for markdown-driven static pages (about, /now, /uses, etc.).
+ * Pulls frontmatter and forwards to BaseLayout. Mirrors the MarkdownPostLayout
+ * pattern, but without the blog-post-specific metadata (no author / pub_date
+ * / tags / cover image).
+ */
+
+import BaseLayout from './BaseLayout.astro';
+
+const { frontmatter } = Astro.props;
+---
+<BaseLayout
+  page_title={frontmatter.page_title}
+  description={frontmatter.description}
+  wide={frontmatter.wide}
+  no_title={frontmatter.no_title}
+  og_type={frontmatter.og_type}
+  og_image={frontmatter.og_image}
+>
+  <slot />
+</BaseLayout>
