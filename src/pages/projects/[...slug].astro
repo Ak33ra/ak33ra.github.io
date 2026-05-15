@@ -17,7 +17,13 @@ const end = project.data.end_date
   ? project.data.end_date.toISOString().slice(0, 10)
   : 'ongoing';
 ---
-<BaseLayout page_title={project.data.title}>
+<BaseLayout
+  page_title={project.data.title}
+  description={project.data.summary}
+  og_type="article"
+  og_image={project.data.image?.url}
+  pub_date={project.data.start_date}
+>
   <p class="post-meta">{project.data.role} · {start} – {end}</p>
   <p><em>{project.data.summary}</em></p>
 

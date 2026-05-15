@@ -5,8 +5,9 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 const all_posts = await getCollection('blog');
 const tags = [...new Set(all_posts.flatMap((post) => post.data.tags))];
 const page_title = "Tag Index";
+const description = "All tags across blog posts.";
 ---
-<BaseLayout page_title={page_title} wide>
+<BaseLayout page_title={page_title} description={description} wide>
   <ul class="chip-list">
     {tags.map((tag) => (
       <li class="chip"><a href={`/tags/${tag}`}>{tag}</a></li>

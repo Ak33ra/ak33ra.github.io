@@ -7,8 +7,9 @@ const sorted = all_writing.sort(
   (a, b) => b.data.pub_date.getTime() - a.data.pub_date.getTime()
 );
 const page_title = "Writing";
+const description = "Writing — articles, essays, and pieces published elsewhere.";
 ---
-<BaseLayout page_title={page_title} wide>
+<BaseLayout page_title={page_title} description={description} wide>
   <ul class="entry-list">
     {sorted.map((entry) => (
       <li>

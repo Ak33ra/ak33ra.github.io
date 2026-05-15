@@ -1,13 +1,13 @@
 ---
 import { getCollection } from 'astro:content';
-import BaseLayout from '../layouts/BaseLayout.astro';
+import BaseLayout from '../layouts/BaseLayout.astro'
 import BlogPost from '../components/BlogPost.astro';
 
 const all_posts = await getCollection('blog');
-const page_title = "My Astro Learning Blog";
+const page_title = "Blog";
+const description = "Long-form posts on engineering, systems, and curiosity.";
 ---
-<BaseLayout page_title={page_title} wide>
-  <p>This is where I will post about my journey learning Astro.</p>
+<BaseLayout page_title={page_title} description={description} wide>
   <ul>
     {all_posts.map((post) => <BlogPost url={`/blog/${post.id}`} title={post.data.title} />)}
   </ul>

@@ -2,8 +2,22 @@
 import { Font } from 'astro:assets';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import SEO from '../components/SEO.astro';
 import '../styles/global.css';
-const { page_title, wide = false, no_title = false } = Astro.props;
+
+const SITE_DESCRIPTION =
+  'Personal site of Akira van de Groenendaal — CMU undergrad in computer science. Writing, projects, and notes on systems, research, and creative work.';
+
+const {
+  page_title,
+  description = SITE_DESCRIPTION,
+  og_type,
+  og_image,
+  pub_date,
+  author,
+  wide = false,
+  no_title = false,
+} = Astro.props;
 ---
 <html lang="en">
   <head>
@@ -15,7 +29,14 @@ const { page_title, wide = false, no_title = false } = Astro.props;
     <Font cssVariable="--font-geist-sans" preload />
     <Font cssVariable="--font-fraunces" preload />
     <Font cssVariable="--font-geist-mono" />
-    <title>{page_title}</title>
+    <SEO
+      title={page_title}
+      description={description}
+      og_type={og_type}
+      og_image={og_image}
+      pub_date={pub_date}
+      author={author}
+    />
     <script is:inline>
       // Apply persisted theme synchronously to avoid flash-of-wrong-theme.
       const stored = localStorage.getItem('theme');

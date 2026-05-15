@@ -14,7 +14,12 @@ const { entry } = Astro.props;
 const { Content } = await render(entry);
 const pub = entry.data.pub_date.toISOString().slice(0, 10);
 ---
-<BaseLayout page_title={entry.data.title}>
+<BaseLayout
+  page_title={entry.data.title}
+  description={entry.data.summary ?? `Writing in ${entry.data.venue}.`}
+  og_type="article"
+  pub_date={entry.data.pub_date}
+>
   <p class="post-meta">{pub} · published in <strong>{entry.data.venue}</strong></p>
 
   {entry.data.summary && <p><em>{entry.data.summary}</em></p>}

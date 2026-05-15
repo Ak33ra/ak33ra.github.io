@@ -7,8 +7,9 @@ const sorted = all_notes.sort(
   (a, b) => b.data.pub_date.getTime() - a.data.pub_date.getTime()
 );
 const page_title = "Notes";
+const description = "Short, often-updated notes — digital-garden style.";
 ---
-<BaseLayout page_title={page_title} wide>
+<BaseLayout page_title={page_title} description={description} wide>
   <ul class="entry-list">
     {sorted.map((note) => (
       <li>

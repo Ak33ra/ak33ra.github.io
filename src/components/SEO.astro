@@ -1,0 +1,66 @@
+---
+/**
+ * Emits the per-page <head> tags that search engines and social platforms read:
+ * <title>, <meta description>, canonical, Open Graph, and Twitter Card.
+ *
+ * Consumed by BaseLayout — pages don't import this directly; they pass props
+ * to BaseLayout which forwards them here.
+ */
+
+type Props = {
+  title: string;
+  description: string;
+  og_type?: 'website' | 'article';
+  /** Relative ("/og.png") or absolute URL. Resolved against Astro.site. Omit to skip og:image. */
+  og_image?: string;
+  /** Override canonical URL (rarely needed — defaults to the current page URL). */
+  canonical_url?: string;
+  /** For og_type="article" only: publication date. */
+  pub_date?: Date;
+  /** For og_type="article" only: author name. */
+  author?: string;
+};
+
+const SITE_NAME = 'Akira van de Groenendaal';
+const SITE_LOCALE = 'en_US';
+
+const {
+  title,
+  description,
+  og_type = 'website',
+  og_image,
+  canonical_url,
+  pub_date,
+  author,
+} = Astro.props as Props;
+
+const canonical = canonical_url
+  ? new URL(canonical_url, Astro.site).href
+  : new URL(Astro.url.pathname, Astro.site).href;
+
+// new URL(x, base) leaves x unchanged if x is absolute, prefixes base if relative.
+const og_image_abs = og_image ? new URL(og_image, Astro.site).href : undefined;
+---
+<title>{title}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonical} />
+
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:type" content={og_type} />
+<meta property="og:url" content={canonical} />
+<meta property="og:site_name" content={SITE_NAME} />
+<meta property="og:locale" content={SITE_LOCALE} />
+{og_image_abs && <meta property="og:image" content={og_image_abs} />}
+
+<meta name="twitter:card" content={og_image_abs ? 'summary_large_image' : 'summary'} />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+{og_image_abs && <meta name="twitter:image" content={og_image_abs} />}
+
+{og_type === 'article' && pub_date && (
+  <meta property="article:published_time" content={pub_date.toISOString()} />
+)}
+{og_type === 'article' && author && (
+  <meta property="article:author" content={author} />
+)}

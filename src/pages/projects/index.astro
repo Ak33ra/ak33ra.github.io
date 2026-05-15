@@ -7,8 +7,9 @@ const sorted = all_projects.sort(
   (a, b) => b.data.start_date.getTime() - a.data.start_date.getTime()
 );
 const page_title = "Projects";
+const description = "Projects — selected work and side experiments.";
 ---
-<BaseLayout page_title={page_title} wide>
+<BaseLayout page_title={page_title} description={description} wide>
   <ul class="project-list">
     {sorted.map((project) => (
       <li class="project-list__item">

@@ -15,7 +15,12 @@ const { Content } = await render(note);
 const pub = note.data.pub_date.toISOString().slice(0, 10);
 const updated = note.data.updated_date?.toISOString().slice(0, 10);
 ---
-<BaseLayout page_title={note.data.title}>
+<BaseLayout
+  page_title={note.data.title}
+  description={`Note: ${note.data.title}`}
+  og_type="article"
+  pub_date={note.data.pub_date}
+>
   <p class="post-meta">
     {pub}{updated && ` · updated ${updated}`}
   </p>
