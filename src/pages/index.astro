@@ -2,6 +2,8 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import FluidHero from '../components/FluidHero.astro';
 import MixedFeed from '../components/MixedFeed.astro';
+import { Image } from 'astro:assets';
+import headshot from '../assets/IMG_5265.jpeg';
 
 const page_title = 'Akira van de Groenendaal';
 ---
@@ -12,6 +14,13 @@ const page_title = 'Akira van de Groenendaal';
   </FluidHero>
 
   <section class="intro" aria-label="Introduction">
+    <Image
+      src={headshot}
+      alt="Portrait of Akira van de Groenendaal"
+      width={320}
+      class="intro__portrait"
+      loading="eager"
+    />
     <!-- PLACEHOLDER intro paragraph. Replace with your own voice. -->
     <p>
       Scientist, computer-science researcher, and engineer — interested in the spaces where rigorous
@@ -43,14 +52,42 @@ const page_title = 'Akira van de Groenendaal';
   }
 
   .intro {
-    max-width: 60ch;
     margin-block: var(--space-8);
+    display: flex;
+    gap: var(--space-6);
+    align-items: center;
+  }
+
+  /* Square-crops a rectangular source via object-fit:cover. Tune object-position
+     if the head sits too high/low in the circle. */
+  .intro__portrait {
+    flex-shrink: 0;
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: center;
+    border: 1px solid var(--color-border);
   }
 
   .intro p {
+    flex: 1;
+    max-width: 60ch;
+    margin: 0;
     font-size: var(--text-lg);
     line-height: var(--leading-loose);
     color: var(--color-fg);
+  }
+
+  @media (max-width: 640px) {
+    .intro {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .intro__portrait {
+      width: 96px;
+      height: 96px;
+    }
   }
 
   .recent {
