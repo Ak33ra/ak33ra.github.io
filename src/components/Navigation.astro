@@ -1,10 +1,27 @@
 ---
+const path = Astro.url.pathname;
+
+// "Home" intentionally omitted from primary nav — the wordmark in the header
+// links home, so a separate "Home" link would be redundant.
+const links = [
+  { href: '/blog/', label: 'Blog' },
+  { href: '/projects/', label: 'Projects' },
+  { href: '/notes/', label: 'Notes' },
+  { href: '/writing/', label: 'Writing' },
+  { href: '/about/', label: 'About' },
+];
+
+function is_active(href: string, current: string) {
+  return current === href || current.startsWith(href);
+}
 ---
 <div id="main-menu" class="nav-links">
-  <a href="/">Home</a>
-  <a href="/blog/">Blog</a>
-  <a href="/projects/">Projects</a>
-  <a href="/notes/">Notes</a>
-  <a href="/writing/">Writing</a>
-  <a href="/about/">About</a>
+  {links.map((link) => (
+    <a
+      href={link.href}
+      aria-current={is_active(link.href, path) ? 'page' : undefined}
+    >
+      {link.label}
+    </a>
+  ))}
 </div>

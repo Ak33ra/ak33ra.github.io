@@ -209,6 +209,30 @@ pre code {
   color: var(--color-on-accent);
 }
 
+/* ---------------------------------------------------- Accessibility primitives */
+
+/* Skip-to-content link: invisible until focused. Lets keyboard users bypass nav.
+   Becomes a visible chip in the top-left when Tab gives it focus. */
+.skip-link {
+  position: absolute;
+  inset-inline-start: var(--space-3);
+  inset-block-start: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  background: var(--color-accent);
+  color: var(--color-on-accent);
+  text-decoration: none;
+  border-radius: var(--radius-sm);
+  font-size: var(--text-sm);
+  z-index: 100;
+  transform: translateY(calc(-100% - var(--space-6)));
+  transition: transform var(--transition-fast);
+}
+
+.skip-link:focus-visible {
+  transform: translateY(0);
+  outline: none;
+}
+
 /* ---------------------------------------------------- Utility primitives */
 
 .chip-list {
@@ -289,13 +313,21 @@ main {
   display: block;
   padding: var(--space-3) 0;
   text-decoration: none;
-  color: var(--color-fg);
+  color: var(--color-fg-muted);
   font-size: var(--text-base);
+  transition: color var(--transition-fast);
 }
 
 .nav-links a:hover,
 .nav-links a:focus-visible {
   color: var(--color-accent);
+}
+
+.nav-links a[aria-current="page"] {
+  color: var(--color-fg);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.4em;
 }
 
 :has(.menu[aria-expanded="true"]) .nav-links {

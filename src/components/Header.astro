@@ -2,23 +2,56 @@
 import Navigation from "./Navigation.astro";
 import Menu from "./Menu.astro";
 import ThemeToggle from "./ThemeToggle.astro";
+
+const is_home = Astro.url.pathname === '/';
 ---
 <header>
-  <nav class="primary-nav">
+  <a
+    href="/"
+    class="wordmark"
+    aria-label="Home"
+    aria-current={is_home ? 'page' : undefined}
+  >akira</a>
+  <nav class="primary-nav" aria-label="Primary">
     <Menu />
     <Navigation />
   </nav>
   <ThemeToggle />
 </header>
+
 <style>
   header {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: var(--space-4);
+    gap: var(--space-6);
     flex-wrap: wrap;
     padding-block: var(--space-4);
     border-bottom: 1px solid var(--color-border);
+  }
+
+  /* Wordmark follows the same three-state treatment as the primary nav links:
+     muted (inactive) → fg + underline (active, on home) → accent (hover/focus). */
+  .wordmark {
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+    font-weight: 600;
+    color: var(--color-fg-muted);
+    text-decoration: none;
+    letter-spacing: -0.01em;
+    margin-right: auto;
+    transition: color var(--transition-fast);
+  }
+
+  .wordmark:hover,
+  .wordmark:focus-visible {
+    color: var(--color-accent);
+  }
+
+  .wordmark[aria-current="page"] {
+    color: var(--color-fg);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.4em;
   }
 
   .primary-nav {

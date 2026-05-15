@@ -46,8 +46,9 @@ const {
     </script>
   </head>
   <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
     <Header />
-    <main data-width={wide ? "wide" : undefined}>
+    <main id="main-content" data-width={wide ? "wide" : undefined}>
       {!no_title && <h1>{page_title}</h1>}
       <slot />
     </main>
