@@ -172,6 +172,7 @@ These are decisions we've consciously not made yet. Don't pick them silently —
 - **`/now` page.** Single-entry "what I'm focused on right now." Not adopted yet — revisit when the bio is settled and you want a lightweight live signal.
 - **CV page format.** Single page vs structured collection — decide when actually building it.
 - **RSS feed.** Deferred by intent (user not interested in subscribe-via-RSS as a use case); the sitemap and OG metadata are in place. Revisit if there's a future reason to feed posts to readers.
+- **Mobile as a target platform.** Currently not a target. The hero is `58vh`, so the swipe-to-scroll and swipe-to-draw gestures collide — touch-drag scrolls past the hero rather than moving the wisp (the wisp still wanders autonomously, so the hero is alive, just not finger-interactive). Don't "fix" this with `touch-action` hacks — the real fix is a deliberately shorter mobile hero (~40vh) with a clearly scrollable region below it, plus proper touch handling. That's a design project, not a one-liner. Revisit only if mobile becomes a target.
 
 ---
 
