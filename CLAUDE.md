@@ -82,7 +82,8 @@ Each content type is its own Astro content collection with its own Zod schema in
 Planned collections:
 
 - **`blog/`** — long-form posts. Implemented.
-- **`projects/`** — portfolio entries: role, stack, dates, links, optional write-up.
+- **`projects/`** — portfolio entries: role, stack, dates, links, optional write-up. Card-grid index.
+- **`teaching/`** — courses TA'd at CMU: course_code, course_name, role, semesters[], last_taught (sortable), summary. Card-grid index. `TeachingCard` uses an `::after` overlay so the whole card is clickable while a separate "Course site →" link stays independently clickable (no nested anchors).
 - **`notes/`** — short, often-updated thoughts (digital-garden style). Lower formality than blog.
 - **`writing/`** — external articles, essays, and pieces published elsewhere. Mostly link entries with metadata. (Talks can be added as a sibling collection when there's something to put in it.)
 

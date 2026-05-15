@@ -1,0 +1,121 @@
+---
+/**
+ * Card layout for a single teaching entry on the teaching index page.
+ * Mirrors ProjectCard but with course-specific fields.
+ *
+ * Click-target trick: the title's <a> covers the whole card via ::after overlay,
+ * so the whole card is clickable. A separate "Course site →" link inside the
+ * card sits above the overlay (higher z-index), so it remains independently
+ * clickable without nesting anchors (which is invalid HTML).
+ */
+
+import { Image } from 'astro:assets';
+
+const { entry } = Astro.props;
+const semesters_str = entry.data.semesters.join(' · ');
+---
+<article class="teaching-card">
+  {entry.data.cover && (
+    <Image
+      src={entry.data.cover}
+      alt={entry.data.cover_alt ?? ''}
+      width={640}
+      class="teaching-card__cover"
+    />
+  )}
+  <div class="teaching-card__body">
+    <h3 class="teaching-card__title">
+      <a href={`/teaching/${entry.id}`}>
+        <span class="teaching-card__code">{entry.data.course_code}</span>
+        <span class="teaching-card__name">{entry.data.course_name}</span>
+      </a>
+    </h3>
+    <p class="teaching-card__meta">{entry.data.role} · {semesters_str}</p>
+    <p class="teaching-card__summary">{entry.data.summary}</p>
+    {entry.data.course_url && (
+      <p class="teaching-card__external">
+        <a href={entry.data.course_url}>Course site →</a>
+      </p>
+    )}
+  </div>
+</article>
+
+<style>
+  .teaching-card {
+    position: relative;
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    transition: border-color var(--transition-fast);
+  }
+
+  .teaching-card:hover,
+  .teaching-card:focus-within {
+    border-color: var(--color-fg-muted);
+  }
+
+  .teaching-card__cover {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .teaching-card__body {
+    padding: var(--space-6);
+  }
+
+  .teaching-card__title {
+    margin: 0 0 var(--space-1);
+    font-family: var(--font-display);
+    font-size: var(--text-2xl);
+    font-weight: 600;
+    line-height: var(--leading-tight);
+  }
+
+  .teaching-card__title a {
+    color: var(--color-fg);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+  }
+
+  /* Whole-card click target — anchor expands to fill the card. */
+  .teaching-card__title a::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+  }
+
+  .teaching-card:hover .teaching-card__title a,
+  .teaching-card:focus-within .teaching-card__title a {
+    color: var(--color-accent);
+  }
+
+  .teaching-card__code {
+    font-family: var(--font-mono);
+    font-size: 0.85em;
+    color: var(--color-fg-muted);
+    margin-right: var(--space-2);
+  }
+
+  .teaching-card__meta {
+    margin: 0 0 var(--space-3);
+    color: var(--color-fg-muted);
+    font-size: var(--text-sm);
+  }
+
+  .teaching-card__summary {
+    margin: 0 0 var(--space-4);
+    color: var(--color-fg);
+  }
+
+  /* External link sits above the title-anchor overlay so it's independently clickable. */
+  .teaching-card__external {
+    position: relative;
+    z-index: 2;
+    margin: 0;
+    font-size: var(--text-sm);
+  }
+</style>

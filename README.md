@@ -47,9 +47,34 @@ public/                      Static assets served as-is (favicons, og.png, robot
 
 ---
 
+## Templates
+
+Frontmatter-prefilled stubs for each content type live at the repo root in `templates/`. Copy a template to start a new piece — beats remembering field names.
+
+```bash
+# blog post (no images)
+cp templates/blog.md src/content/blog/<slug>.md
+
+# blog post with a cover image (folder-style)
+mkdir -p src/content/blog/<slug>
+cp templates/blog.md src/content/blog/<slug>/index.md
+# then drop cover.jpg in src/content/blog/<slug>/
+
+# same pattern for other content types
+cp templates/project.md   src/content/projects/<slug>.md
+cp templates/teaching.md  src/content/teaching/<slug>.md
+cp templates/note.md      src/content/notes/<slug>.md
+cp templates/writing.md   src/content/writing/<slug>.md
+
+# new static page (/now, /uses, /colophon, …)
+cp templates/page.md src/pages/<slug>.md
+```
+
+Templates live outside `src/` so Astro ignores them entirely.
+
 ## Creating content
 
-All four content types follow the same pattern: a markdown file with frontmatter, validated against a Zod schema in `src/content.config.ts`, served at the route matching the collection.
+All content types follow the same pattern: a markdown file with frontmatter, validated against a Zod schema in `src/content.config.ts`, served at the route matching the collection.
 
 ### A blog post
 
@@ -111,6 +136,28 @@ featured: true                   # optional
 
 Body — write-up, retrospective, technical detail.
 ```
+
+### A teaching entry
+
+`src/content/teaching/<slug>.md` (or folder + `index.md` for a cover image).
+
+```yaml
+---
+course_code: '15-213'
+course_name: 'Introduction to Computer Systems'
+course_url: 'https://www.cs.cmu.edu/~213/'   # optional
+role: 'Teaching Assistant'
+semesters: ['Fall 2024', 'Spring 2025']
+last_taught: 2025-05-01                       # used for sorting + Recent feed
+summary: 'One-sentence pitch — what you did, what stuck.'
+cover: './cover.jpg'                          # optional
+cover_alt: '...'                              # required if cover present
+---
+
+Body — course content, recitations, anecdotes.
+```
+
+URL is `/teaching/<slug>/`. Cards render in a grid on `/teaching/`.
 
 ### A note
 
@@ -201,6 +248,7 @@ Common edits:
 |---|---|
 | `/blog/` | `src/pages/blog.astro` |
 | `/projects/` | `src/pages/projects/index.astro` |
+| `/teaching/` | `src/pages/teaching/index.astro` |
 | `/notes/` | `src/pages/notes/index.astro` |
 | `/writing/` | `src/pages/writing/index.astro` |
 | `/tags/` | `src/pages/tags/index.astro` |

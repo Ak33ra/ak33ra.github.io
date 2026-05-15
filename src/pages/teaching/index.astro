@@ -1,0 +1,27 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import TeachingCard from '../../components/TeachingCard.astro';
+
+const all_teaching = await getCollection('teaching');
+const sorted = all_teaching.sort(
+  (a, b) => b.data.last_taught.getTime() - a.data.last_taught.getTime()
+);
+
+const page_title = "Teaching";
+const description = "Courses I've TA'd at Carnegie Mellon.";
+---
+<BaseLayout page_title={page_title} description={description} wide>
+  <div class="teaching-grid">
+    {sorted.map((entry) => <TeachingCard entry={entry} />)}
+  </div>
+</BaseLayout>
+
+<style>
+  .teaching-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: var(--space-6);
+    margin-block: var(--space-6);
+  }
+</style>

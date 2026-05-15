@@ -1,0 +1,40 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const all_teaching = await getCollection('teaching');
+  return all_teaching.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const semesters_str = entry.data.semesters.join(' · ');
+const page_title = `${entry.data.course_code} — ${entry.data.course_name}`;
+---
+<BaseLayout
+  page_title={page_title}
+  description={entry.data.summary}
+  og_type="article"
+  og_image={entry.data.cover?.src}
+  pub_date={entry.data.last_taught}
+>
+  <p class="post-meta">{entry.data.role} · {semesters_str}</p>
+  <p><em>{entry.data.summary}</em></p>
+
+  {entry.data.course_url && (
+    <p><a href={entry.data.course_url}>Course site →</a></p>
+  )}
+
+  <Content />
+</BaseLayout>
+
+<style>
+  .post-meta {
+    color: var(--color-fg-muted);
+    font-size: var(--text-sm);
+  }
+</style>

@@ -64,6 +64,31 @@ const projects = defineCollection({
       ),
 });
 
+const teaching = defineCollection({
+  loader: glob({
+    pattern: '**/*.md',
+    base: './src/content/teaching',
+    generateId: ({ entry }) => id_from_path(entry),
+  }),
+  schema: ({ image }) =>
+    z
+      .object({
+        course_code: z.string(),
+        course_name: z.string(),
+        course_url: z.string().url().optional(),
+        role: z.string(),
+        semesters: z.array(z.string()),
+        last_taught: z.coerce.date(),
+        summary: z.string(),
+        cover: image().optional(),
+        cover_alt: z.string().optional(),
+      })
+      .refine(
+        (data) => !data.cover || Boolean(data.cover_alt),
+        { message: 'cover_alt is required when cover is provided' }
+      ),
+});
+
 const notes = defineCollection({
   loader: glob({
     pattern: '**/*.md',
@@ -94,4 +119,4 @@ const writing = defineCollection({
   }),
 });
 
-export const collections = { blog, projects, notes, writing };
+export const collections = { blog, projects, teaching, notes, writing };

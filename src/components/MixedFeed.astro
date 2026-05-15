@@ -1,6 +1,6 @@
 ---
 /**
- * Home-page "Recent" feed: fetches all four content collections, interleaves them
+ * Home-page "Recent" feed: fetches all content collections, interleaves them
  * by date, and renders the top N entries through EntryList (with type labels).
  *
  * Layout/styling lives in EntryList — this component is pure data orchestration.
@@ -9,9 +9,10 @@
 import { getCollection } from 'astro:content';
 import EntryList from './EntryList.astro';
 
-const [blog, projects, notes, writing] = await Promise.all([
+const [blog, projects, teaching, notes, writing] = await Promise.all([
   getCollection('blog'),
   getCollection('projects'),
+  getCollection('teaching'),
   getCollection('notes'),
   getCollection('writing'),
 ]);
@@ -30,6 +31,13 @@ const items = [
     date: p.data.end_date ?? p.data.start_date,
     url: `/projects/${p.id}`,
     summary: p.data.summary,
+  })),
+  ...teaching.map((t) => ({
+    type: 'teaching',
+    title: `${t.data.course_code} — ${t.data.course_name}`,
+    date: t.data.last_taught,
+    url: `/teaching/${t.id}`,
+    summary: t.data.summary,
   })),
   ...notes.map((n) => ({
     type: 'note',
