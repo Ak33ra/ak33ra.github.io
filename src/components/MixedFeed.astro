@@ -9,12 +9,13 @@
 import { getCollection } from 'astro:content';
 import EntryList from './EntryList.astro';
 
-const [blog, projects, teaching, notes, writing] = await Promise.all([
+const [blog, projects, teaching, notes, writing, papers] = await Promise.all([
   getCollection('blog'),
   getCollection('projects'),
   getCollection('teaching'),
   getCollection('notes'),
   getCollection('writing'),
+  getCollection('paper-summaries'),
 ]);
 
 const items = [
@@ -51,6 +52,13 @@ const items = [
     date: w.data.pub_date,
     url: `/writing/${w.id}`,
     summary: w.data.summary ?? `Published in ${w.data.venue}`,
+  })),
+  ...papers.map((p) => ({
+    type: 'paper',
+    title: p.data.title,
+    date: p.data.updated_date ?? p.data.pub_date,
+    url: `/paper-summaries/${p.id}`,
+    meta: p.data.venue,
   })),
 ];
 

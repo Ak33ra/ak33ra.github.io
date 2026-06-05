@@ -4,6 +4,9 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import SEO from '../components/SEO.astro';
 import '../styles/global.css';
+// KaTeX stylesheet for build-time-rendered math (see astro.config.mjs). Bundled and
+// self-hosted by Vite. Glyph fonts load only on pages that actually contain math.
+import 'katex/dist/katex.min.css';
 
 const SITE_DESCRIPTION =
   'Personal site of Akira van de Groenendaal — CMU undergrad in computer science. Writing, projects, and notes on systems, research, and creative work.';

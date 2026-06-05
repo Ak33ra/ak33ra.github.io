@@ -119,6 +119,29 @@ const writing = defineCollection({
   }),
 });
 
+// Paper summaries: short, freeform summaries of papers read (digital-garden-ish,
+// like notes but paper-specific). Metadata lives in frontmatter; the summary itself
+// is the markdown body — write whatever headings you like (Summary, Key Insights,
+// Techniques, Questions, …), omit any. Sorted by when *you* summarized it, not the
+// paper's own year (which is an optional display field). Mirrors ~/research-notes.
+const paper_summaries = defineCollection({
+  loader: glob({
+    pattern: '**/*.md',
+    base: './src/content/paper-summaries',
+    generateId: ({ entry }) => id_from_path(entry),
+  }),
+  schema: z.object({
+    title: z.string(),
+    paper_url: z.string().url(),
+    authors: z.string().optional(),
+    venue: z.string().optional(),
+    paper_year: z.number().int().optional(),
+    pub_date: z.coerce.date(),
+    updated_date: z.coerce.date().optional(),
+    tags: z.array(z.string()).optional(),
+  }),
+});
+
 // News: short dated one-liners (awards, positions, milestones) that don't warrant
 // a full post. Single YAML file, keyed-object format — each top-level key is the
 // entry id (internal only; news has no detail pages). Lowest-friction content type.
@@ -131,4 +154,12 @@ const news = defineCollection({
   }),
 });
 
-export const collections = { blog, projects, teaching, notes, writing, news };
+export const collections = {
+  blog,
+  projects,
+  teaching,
+  notes,
+  writing,
+  news,
+  'paper-summaries': paper_summaries,
+};

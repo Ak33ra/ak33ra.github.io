@@ -1,0 +1,64 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const summaries = await getCollection('paper-summaries');
+  return summaries.map((summary) => ({
+    params: { slug: summary.id },
+    props: { summary },
+  }));
+}
+
+const { summary } = Astro.props;
+const { data } = summary;
+const { Content } = await render(summary);
+
+const pub = data.pub_date.toISOString().slice(0, 10);
+const updated = data.updated_date?.toISOString().slice(0, 10);
+
+// Authors · Venue · Year — drop the empties, join with a middle dot.
+const paper_line = [data.authors, data.venue, data.paper_year]
+  .filter(Boolean)
+  .join(' · ');
+---
+<BaseLayout
+  page_title={data.title}
+  description={`Paper summary: ${data.title}`}
+  og_type="article"
+  pub_date={data.pub_date}
+>
+  {paper_line && <p class="paper-line">{paper_line}</p>}
+
+  <p class="post-meta">
+    summarized {pub}{updated && ` · updated ${updated}`}
+  </p>
+
+  <p class="paper-link">
+    <a href={data.paper_url}>Read the paper →</a>
+  </p>
+
+  {data.tags && data.tags.length > 0 && (
+    <ul class="chip-list">
+      {data.tags.map((tag) => <li class="chip">{tag}</li>)}
+    </ul>
+  )}
+
+  <Content />
+</BaseLayout>
+<style>
+  .paper-line {
+    margin: 0 0 var(--space-1);
+    color: var(--color-fg);
+    font-size: var(--text-sm);
+  }
+  .post-meta {
+    margin: 0 0 var(--space-3);
+    color: var(--color-fg-muted);
+    font-size: var(--text-sm);
+  }
+  .paper-link {
+    margin: 0 0 var(--space-4);
+    font-size: var(--text-sm);
+  }
+</style>

@@ -1,0 +1,41 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import EntryList from '../../components/EntryList.astro';
+
+const all = await getCollection('paper-summaries');
+const items = all
+  .sort((a, b) => {
+    const a_date = a.data.updated_date ?? a.data.pub_date;
+    const b_date = b.data.updated_date ?? b.data.pub_date;
+    return b_date.getTime() - a_date.getTime();
+  })
+  .map((s) => ({
+    title: s.data.title,
+    date: s.data.updated_date ?? s.data.pub_date,
+    url: `/paper-summaries/${s.id}`,
+    meta: s.data.venue,
+  }));
+
+const page_title = 'Paper summaries';
+const description = "Short summaries of papers I've been reading.";
+---
+<BaseLayout page_title={page_title} description={description} wide>
+  <p class="lede">
+    Freeform summaries of papers I read or skimmed - mostly systems, queueing theory,
+    and machine learning.
+    The main purpose is to act as a personal reference, as well as catalog my 
+    own reading and academic progress. I hope these summaries lead 
+    you to discover something of interest as well. 
+  </p>
+  <EntryList items={items} />
+</BaseLayout>
+<style>
+  .lede {
+    max-width: 60ch;
+    margin: 0 0 var(--space-8);
+    font-size: var(--text-lg);
+    line-height: var(--leading-loose);
+    color: var(--color-fg-muted);
+  }
+</style>

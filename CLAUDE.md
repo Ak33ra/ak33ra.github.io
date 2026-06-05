@@ -43,6 +43,13 @@ Personal website. Static Astro site, deployed to GitHub Pages. This document cap
 - Served via Astro's built-in font management (configure in `astro.config.mjs`).
 - Font family exposed as a CSS variable (`--font-display`, `--font-body`, `--font-mono`) so components consume tokens, not font names.
 
+## Math (LaTeX)
+
+- **Rendered at build time, not in the browser.** `remark-math` parses `$inline$` and `$$block$$` in any markdown content; `rehype-katex` renders it to static HTML. Configured once in `astro.config.mjs` under `markdown.{remarkPlugins,rehypePlugins}` — every collection gets it for free.
+- **No client JS.** Math is plain HTML+CSS in the output, so it honors the "no content requires JS to read" floor.
+- **KaTeX CSS is self-hosted.** Imported once in `src/layouts/BaseLayout.astro` (`import 'katex/dist/katex.min.css'`); Vite bundles it and rewrites the `url()` font references to hashed local assets under `/_astro/` — no CDN, consistent with the self-hosted-fonts rule. The ~23KB stylesheet loads site-wide; KaTeX's glyph fonts (`woff2`) download only on pages that actually contain math.
+- **Authoring**: inline `$\rho < 1$`, display `$$ ... $$`. A literal dollar sign in prose needs escaping (`\$`) to avoid being parsed as math. See `src/content/paper-summaries/serverfilling.md` for a live example.
+
 ## Accessibility floor
 
 This is the minimum we always meet. Higher is welcome; lower is a regression.
@@ -85,6 +92,7 @@ Planned collections:
 - **`projects/`** — portfolio entries: role, stack, dates, links, optional write-up. Card-grid index.
 - **`teaching/`** — courses TA'd at CMU: course_code, course_name, role, semesters[], last_taught (sortable), summary. Card-grid index. `TeachingCard` uses an `::after` overlay so the whole card is clickable while a separate "Course site →" link stays independently clickable (no nested anchors).
 - **`notes/`** — short, often-updated thoughts (digital-garden style). Lower formality than blog.
+- **`paper-summaries/`** — freeform summaries of papers read. Implemented. Metadata in frontmatter (`title`, `paper_url`, `authors?`, `venue?`, `paper_year?`, `pub_date`, `updated_date?`, `tags?`); the summary is the markdown body — write whatever headings fit (Summary, Key Insights, Techniques, Questions, …), omit any. Sorted by `updated_date ?? pub_date` (when *you* summarized it), not the paper's year. Index page carries an inline intro `<p class="lede">`. Nav label is "Summaries"; route is `/paper-summaries/`. Mirrors the `~/research-notes` repo. Collection key is hyphenated (`'paper-summaries'`) so `getCollection('paper-summaries')` — the only hyphenated key.
 - **`writing/`** — external articles, essays, and pieces published elsewhere. Mostly link entries with metadata. (Talks can be added as a sibling collection when there's something to put in it.)
 - **`news/`** — dated one-liners (awards, positions, milestones). Single `news.yaml` via the `file()` loader (keyed-object format, key = id), **not** glob/markdown — correct tool for one-liners. Home-page-only (recent 6, sorted by `date` desc); no detail pages, no `/news` archive (deferred until the list is long).
 
