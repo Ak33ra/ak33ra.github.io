@@ -86,15 +86,15 @@ Verify with Lighthouse (or PageSpeed Insights) when changes touch the landing pa
 
 Each content type is its own Astro content collection with its own Zod schema in `src/content.config.ts`. Schemas use snake_case keys. Layouts/components are shared across collections where structure overlaps.
 
-Planned collections:
+Collections — all registered in `src/content.config.ts`. "Scaffolded" means the schema and routes exist but no entries are written yet:
 
-- **`blog/`** — long-form posts. Implemented.
-- **`projects/`** — portfolio entries: role, stack, dates, links, optional write-up. Card-grid index.
-- **`teaching/`** — courses TA'd at CMU: course_code, course_name, role, semesters[], last_taught (sortable), summary. Card-grid index. `TeachingCard` uses an `::after` overlay so the whole card is clickable while a separate "Course site →" link stays independently clickable (no nested anchors).
-- **`notes/`** — short, often-updated thoughts (digital-garden style). Lower formality than blog.
-- **`paper-summaries/`** — freeform summaries of papers read. Implemented. Metadata in frontmatter (`title`, `paper_url`, `authors?`, `venue?`, `paper_year?`, `pub_date`, `updated_date?`, `tags?`); the summary is the markdown body — write whatever headings fit (Summary, Key Insights, Techniques, Questions, …), omit any. Sorted by `updated_date ?? pub_date` (when *you* summarized it), not the paper's year. Index page carries an inline intro `<p class="lede">`. Nav label is "Summaries"; route is `/paper-summaries/`. Mirrors the `~/research-notes` repo. Collection key is hyphenated (`'paper-summaries'`) so `getCollection('paper-summaries')` — the only hyphenated key.
-- **`writing/`** — external articles, essays, and pieces published elsewhere. Mostly link entries with metadata. (Talks can be added as a sibling collection when there's something to put in it.)
-- **`news/`** — dated one-liners (awards, positions, milestones). Single `news.yaml` via the `file()` loader (keyed-object format, key = id), **not** glob/markdown — correct tool for one-liners. Home-page-only (recent 6, sorted by `date` desc); no detail pages, no `/news` archive (deferred until the list is long).
+- **`blog/`** — long-form posts. The reference collection the others clone; schema, layout, and routes scaffolded — no posts written yet.
+- **`projects/`** — portfolio entries: role, stack, dates, links, optional write-up. Card-grid index via `ProjectCard`. Implemented.
+- **`teaching/`** — courses TA'd at CMU: course_code, course_name, role, semesters[], last_taught (sortable), summary. Card-grid index. `TeachingCard` uses an `::after` overlay so the whole card is clickable while a separate "Course site →" link stays independently clickable (no nested anchors). Implemented.
+- **`notes/`** — short, often-updated thoughts (digital-garden style). Lower formality than blog. Scaffolded; no entries yet.
+- **`paper-summaries/`** — freeform summaries of papers read. Implemented. Metadata in frontmatter (`title`, `paper_url`, `authors?`, `venue?`, `paper_year?`, `pub_date`, `updated_date?`, `tags?`); the summary is the markdown body — write whatever headings fit (Summary, Key Insights, Techniques, Questions, …), omit any. Sorted by `updated_date ?? pub_date` (when *you* summarized it), not the paper's year. Index page carries an inline intro `<p class="lede">`. Nav label is "Paper Summaries"; route is `/paper-summaries/`. Mirrors the `~/research-notes` repo. Collection key is hyphenated (`'paper-summaries'`) so `getCollection('paper-summaries')` — the only hyphenated key.
+- **`writing/`** — external articles, essays, and pieces published elsewhere. Mostly link entries with metadata. Scaffolded; no entries yet. (Talks can be added as a sibling collection when there's something to put in it.)
+- **`news/`** — dated one-liners (awards, positions, milestones). Single `news.yaml` via the `file()` loader (keyed-object format, key = id), **not** glob/markdown — correct tool for one-liners. Home-page-only (recent 6, sorted by `date` desc); no detail pages, no `/news` archive (deferred until the list is long). Implemented.
 
 Routes mirror collections: `/blog/<slug>`, `/projects/<slug>`, etc. Each collection has a dynamic route (`src/pages/<collection>/[...slug].astro`) and an index page.
 
@@ -120,7 +120,7 @@ Cover images live next to the content they describe, get optimized at build, tra
 - **Optimization**: all local images go through `astro:assets` and ship as WebP at the requested width. Source files (jpg/png) are typically ~10–30× larger than what ships.
 - **Remote images**: cover images **must** be local — the schema's `image()` helper rejects remote URLs. Body images may reference remote URLs when there's a real reason (screenshots of external sites, etc.), but local-first is the default.
 - **Rendering**: cover images render via `<Image src={data.cover} alt={data.cover_alt} width={...} />` from `astro:assets`. Don't use raw `<img>` for content images — you lose optimization and lazy-load defaults.
-- **Site-wide OG image**: `public/og.png` (1200×630) when ready. Reference from the home page's `og_image` prop. Pages without their own `og_image` currently emit no preview image (better than a broken one).
+- **Site-wide OG image**: `public/og.png` (1200×630) is in place and referenced from the home page's `og_image` prop. Pages without their own `og_image` emit no preview image (better than a broken one).
 - **Alt text discipline**: required wherever images appear via the schema's `.refine()`. Decorative-only images may use empty `alt=""` but the field must be present.
 
 ## Landing page hero
@@ -155,17 +155,19 @@ Cover images live next to the content they describe, get optimized at build, tra
 src/
 ├── content.config.ts        Zod schemas for every collection
 ├── content/                 All content. No code.
-│   ├── blog/
-│   ├── projects/            (planned)
-│   ├── notes/               (planned)
-│   └── writing/             (planned)
+│   ├── news/                news.yaml — dated one-liners
+│   ├── paper-summaries/     paper summary entries
+│   ├── projects/            portfolio entries
+│   └── teaching/            courses TA'd
+│                            (blog/, notes/, writing/ registered but no entries yet)
+├── assets/                  Local images optimized by astro:assets (e.g. headshot)
 ├── components/              Leaf-level UI building blocks
 ├── layouts/                 Page shells; compose components
 ├── pages/                   Thin route files; one .astro per route
-├── scripts/                 Vanilla JS enhancements (menu, theme toggle, ...)
+├── scripts/                 Vanilla JS enhancements (menu, theme, fluid-hero variants)
 └── styles/
     └── global.css           Tokens + element defaults
-public/                      Static assets served as-is (favicons, og images, ...)
+public/                      Static assets served as-is (favicon.*, og.png, robots.txt)
 ```
 
 ---
