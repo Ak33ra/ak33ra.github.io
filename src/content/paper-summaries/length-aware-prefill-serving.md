@@ -4,7 +4,7 @@ paper_url: 'https://arxiv.org/pdf/2601.11589'
 venue: 'MLSys'
 paper_year: 2026
 pub_date: 2026-06-03
-tags: ['OS for machine learning', 'GPU OS', 'GPU resource management']
+tags: ['ML Systems', 'LLM Inference']
 ---
 
 ## Summary
