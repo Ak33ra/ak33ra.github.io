@@ -1,11 +1,16 @@
 ---
-layout: ../layouts/MarkdownPageLayout.astro
-page_title: ''
-description: ''
-# wide: true                  # opt into the wider content measure
+title: ''
+paper_url: ''
+venue: ''
+paper_year: 2026
+pub_date: 2026-01-01
+tags: ['template']
 ---
 
-<!--
-  Copy to: src/pages/<slug>.md
-  Pure markdown. Use ## for section headings; the page title becomes <h1>.
--->
+## Summary
+
+## Key Insights
+
+## Techniques
+
+## Notes
