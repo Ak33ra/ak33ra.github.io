@@ -53,8 +53,8 @@ their policy performs within 10% of the best engine considered.
 ## Conclusions
 
 The paper's figures are convincing that prefill-decode interference is a real 
-effect, but I'm not fully convinced the mechanism they proposed (memory 
-bandwidth) is the full story. It follows that their model and scheduler 
+effect, but I'm not fully sold the mechanism they proposed (memory 
+bandwidth) is the full story. Their model and scheduler 
 could be derived with just the observation that at a certain threshold, EB 
 is more efficient than MB, and using measured per-token costs. Regardless, 
-it is empirically convincing that bandwidth plays a role.
+it would make sense that memory bandwidth plays a role.
