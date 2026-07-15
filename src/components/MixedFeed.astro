@@ -3,10 +3,16 @@
  * Home-page "Recent" feed: fetches all content collections, interleaves them
  * by date, and renders the top N entries through EntryList (with type labels).
  *
+ * Which collections are eligible for the feed is toggled — per collection — in
+ * `src/site.config.ts` (feed_collections). Each mapper below stays in place; a
+ * `false` flag just drops that collection's items before the interleave. Hiding a
+ * collection here does NOT affect its index page, detail pages, or nav link.
+ *
  * Layout/styling lives in EntryList — this component is pure data orchestration.
  */
 
 import { getCollection } from 'astro:content';
+import { feed_collections } from '../site.config';
 import EntryList from './EntryList.astro';
 
 const [blog, projects, teaching, notes, writing, papers] = await Promise.all([
@@ -18,48 +24,62 @@ const [blog, projects, teaching, notes, writing, papers] = await Promise.all([
   getCollection('paper-summaries'),
 ]);
 
+// Each block is guarded by its flag in feed_collections (src/site.config.ts).
+// A `false` flag contributes an empty list, so the collection sits out of the feed.
 const items = [
-  ...blog.map((p) => ({
-    type: 'blog',
-    title: p.data.title,
-    date: p.data.pub_date,
-    url: `/blog/${p.id}`,
-    summary: p.data.description,
-  })),
-  ...projects.map((p) => ({
-    type: 'project',
-    title: p.data.title,
-    date: p.data.end_date ?? p.data.start_date,
-    url: `/projects/${p.id}`,
-    summary: p.data.summary,
-  })),
-  ...teaching.map((t) => ({
-    type: 'teaching',
-    title: `${t.data.course_code} — ${t.data.course_name}`,
-    date: t.data.last_taught,
-    url: `/teaching/${t.id}`,
-    summary: t.data.summary,
-  })),
-  ...notes.map((n) => ({
-    type: 'note',
-    title: n.data.title,
-    date: n.data.updated_date ?? n.data.pub_date,
-    url: `/notes/${n.id}`,
-  })),
-  ...writing.map((w) => ({
-    type: 'writing',
-    title: w.data.title,
-    date: w.data.pub_date,
-    url: `/writing/${w.id}`,
-    summary: w.data.summary ?? `Published in ${w.data.venue}`,
-  })),
-  ...papers.map((p) => ({
-    type: 'paper',
-    title: p.data.title,
-    date: p.data.updated_date ?? p.data.pub_date,
-    url: `/paper-summaries/${p.id}`,
-    meta: p.data.venue,
-  })),
+  ...(feed_collections.blog
+    ? blog.map((p) => ({
+        type: 'blog',
+        title: p.data.title,
+        date: p.data.pub_date,
+        url: `/blog/${p.id}`,
+        summary: p.data.description,
+      }))
+    : []),
+  ...(feed_collections.projects
+    ? projects.map((p) => ({
+        type: 'project',
+        title: p.data.title,
+        date: p.data.end_date ?? p.data.start_date,
+        url: `/projects/${p.id}`,
+        summary: p.data.summary,
+      }))
+    : []),
+  ...(feed_collections.teaching
+    ? teaching.map((t) => ({
+        type: 'teaching',
+        title: `${t.data.course_code} — ${t.data.course_name}`,
+        date: t.data.last_taught,
+        url: `/teaching/${t.id}`,
+        summary: t.data.summary,
+      }))
+    : []),
+  ...(feed_collections.notes
+    ? notes.map((n) => ({
+        type: 'note',
+        title: n.data.title,
+        date: n.data.updated_date ?? n.data.pub_date,
+        url: `/notes/${n.id}`,
+      }))
+    : []),
+  ...(feed_collections.writing
+    ? writing.map((w) => ({
+        type: 'writing',
+        title: w.data.title,
+        date: w.data.pub_date,
+        url: `/writing/${w.id}`,
+        summary: w.data.summary ?? `Published in ${w.data.venue}`,
+      }))
+    : []),
+  ...(feed_collections['paper-summaries']
+    ? papers.map((p) => ({
+        type: 'paper',
+        title: p.data.title,
+        date: p.data.updated_date ?? p.data.pub_date,
+        url: `/paper-summaries/${p.id}`,
+        meta: p.data.venue,
+      }))
+    : []),
 ];
 
 items.sort((a, b) => b.date.getTime() - a.date.getTime());

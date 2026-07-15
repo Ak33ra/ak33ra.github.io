@@ -253,6 +253,7 @@ Common edits:
 - **Tagline** under the name in the hero
 - **Intro paragraph** (currently a placeholder under `<!-- PLACEHOLDER -->`)
 - **Feed item count**: `<MixedFeed limit={10} />`
+- **Which collections appear in the feed**: `feed_collections` in `src/site.config.ts` — flip any collection to `false` to drop it from the "Recent" feed (its own index/detail pages stay). Paper summaries ship hidden this way.
 - **Hero variant**: `<FluidHero variant="lantern" />` — options: `smoke`, `liquid`, `ambient`, `lantern`
 
 ### Index pages
@@ -287,6 +288,7 @@ The header wordmark (`akira`) is in `src/components/Header.astro` — also auto-
 |---|---|
 | Site URL, integrations, fonts | `astro.config.mjs` |
 | Site-wide meta description | `SITE_DESCRIPTION` in `src/layouts/BaseLayout.astro` |
+| Which collections show in the home "Recent" feed | `feed_collections` in `src/site.config.ts` |
 | Year on footer | auto-computed |
 | Wordmark text | `src/components/Header.astro` |
 | Nav items | `src/components/Navigation.astro` |
@@ -336,6 +338,7 @@ Switch via the `variant` prop on `<FluidHero>`. Only the selected variant ships 
 3. Create `src/pages/<collection>/[...slug].astro` — usually a clone of `src/pages/blog/[...slug].astro`.
 4. Create `src/pages/<collection>/index.astro` for the listing page.
 5. Add a nav link in `src/components/Navigation.astro`.
+6. Add a `feed_collections` entry in `src/site.config.ts` (`true`/`false`) and, if `true`, a matching mapper block in `src/components/MixedFeed.astro` so it can appear in the home "Recent" feed.
 
 ---
 

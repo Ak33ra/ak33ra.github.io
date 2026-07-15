@@ -92,7 +92,7 @@ Collections — all registered in `src/content.config.ts`. "Scaffolded" means th
 - **`projects/`** — portfolio entries: role, stack, dates, links, optional write-up. Card-grid index via `ProjectCard`. Implemented.
 - **`teaching/`** — courses TA'd at CMU: course_code, course_name, role, semesters[], last_taught (sortable), summary. Card-grid index. `TeachingCard` uses an `::after` overlay so the whole card is clickable while a separate "Course site →" link stays independently clickable (no nested anchors). Implemented.
 - **`notes/`** — short, often-updated thoughts (digital-garden style). Lower formality than blog. Scaffolded; no entries yet.
-- **`paper-summaries/`** — freeform summaries of papers read. Implemented. Metadata in frontmatter (`title`, `paper_url`, `authors?`, `venue?`, `paper_year?`, `pub_date`, `updated_date?`, `tags?`); the summary is the markdown body — write whatever headings fit (Summary, Key Insights, Techniques, Questions, …), omit any. Sorted by `updated_date ?? pub_date` (when *you* summarized it), not the paper's year. Index page carries an inline intro `<p class="lede">`. Nav label is "Paper Summaries"; route is `/paper-summaries/`. Mirrors the `~/research-notes` repo. Collection key is hyphenated (`'paper-summaries'`) so `getCollection('paper-summaries')` — the only hyphenated key.
+- **`paper-summaries/`** — freeform summaries of papers read. Implemented. Metadata in frontmatter (`title`, `paper_url`, `authors?`, `venue?`, `paper_year?`, `pub_date`, `updated_date?`, `tags?`); the summary is the markdown body — write whatever headings fit (Summary, Key Insights, Techniques, Questions, …), omit any. Sorted by `updated_date ?? pub_date` (when *you* summarized it), not the paper's year. Index page carries an inline intro `<p class="lede">`. Nav label is "Paper Summaries"; route is `/paper-summaries/`. Mirrors the `~/research-notes` repo. Collection key is hyphenated (`'paper-summaries'`) so `getCollection('paper-summaries')` — the only hyphenated key. **Hidden from the home "Recent" feed by default** via `feed_collections['paper-summaries'] = false` in `src/site.config.ts` (kept out to avoid cluttering the feed) — the `/paper-summaries/` index still lists everything; flip the flag to re-include it in the feed.
 - **`writing/`** — external articles, essays, and pieces published elsewhere. Mostly link entries with metadata. Scaffolded; no entries yet. (Talks can be added as a sibling collection when there's something to put in it.)
 - **`news/`** — dated one-liners (awards, positions, milestones). Single `news.yaml` via the `file()` loader (keyed-object format, key = id), **not** glob/markdown — correct tool for one-liners. Home-page-only (recent 6, sorted by `date` desc); no detail pages, no `/news` archive (deferred until the list is long). Implemented.
 
@@ -100,13 +100,14 @@ Routes mirror collections: `/blog/<slug>`, `/projects/<slug>`, etc. Each collect
 
 ### Adding a new collection
 
-Adding a new content type is intentionally a mechanical, ~5-step operation. Future-proofing this matters more than any individual collection:
+Adding a new content type is intentionally a mechanical, ~6-step operation. Future-proofing this matters more than any individual collection:
 
 1. Add a `defineCollection({ loader: glob({ pattern, base }), schema })` entry to `src/content.config.ts`. Snake_case keys in the schema.
 2. Create `src/content/<collection>/` and start dropping markdown files in.
 3. Create `src/pages/<collection>/[...slug].astro` for individual entries — usually a near-clone of `src/pages/blog/[...slug].astro`.
 4. Create `src/pages/<collection>/index.astro` for the listing.
 5. Add a nav link in `src/components/Navigation.astro`.
+6. Add a `feed_collections` entry in `src/site.config.ts` (`true`/`false`), and — if `true` — a matching mapper block in `src/components/MixedFeed.astro` so entries can surface in the home "Recent" feed. Keep the map complete: every registered collection gets a key, so the flag list stays an honest menu of what the feed can contain.
 
 If steps 3 and 4 start looking identical across collections, refactor them into a generic `<CollectionList>` / shared dynamic route before adding a third — don't let the duplication compound.
 
@@ -154,6 +155,7 @@ Cover images live next to the content they describe, get optimized at build, tra
 ```
 src/
 ├── content.config.ts        Zod schemas for every collection
+├── site.config.ts           Hand-toggled site knobs (feed_collections: what shows in the home feed)
 ├── content/                 All content. No code.
 │   ├── news/                news.yaml — dated one-liners
 │   ├── paper-summaries/     paper summary entries
