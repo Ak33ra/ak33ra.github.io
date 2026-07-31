@@ -272,7 +272,7 @@ Each index page renders its collection's entries (sorted by date) with a small l
 
 ### Nav links
 
-`src/components/Navigation.astro` — array of `{ href, label }`. Active page is auto-marked with `aria-current="page"`.
+`src/components/Navigation.astro` — array of `{ key, href, label }`. Active page is auto-marked with `aria-current="page"`. Each entry's `key` maps to `nav_sections` in `src/site.config.ts`; flip a key to `false` there to hide that section's nav link (handy for scaffolded collections with no content yet — the routes still exist, just unlinked).
 
 The header wordmark (`akira`) is in `src/components/Header.astro` — also auto-marks itself active when on `/`.
 
@@ -289,6 +289,7 @@ The header wordmark (`akira`) is in `src/components/Header.astro` — also auto-
 | Site URL, integrations, fonts | `astro.config.mjs` |
 | Site-wide meta description | `SITE_DESCRIPTION` in `src/layouts/BaseLayout.astro` |
 | Which collections show in the home "Recent" feed | `feed_collections` in `src/site.config.ts` |
+| Which sections show a link in the primary nav | `nav_sections` in `src/site.config.ts` |
 | Year on footer | auto-computed |
 | Wordmark text | `src/components/Header.astro` |
 | Nav items | `src/components/Navigation.astro` |

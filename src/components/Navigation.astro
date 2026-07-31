@@ -1,17 +1,21 @@
 ---
+import { nav_sections } from '../site.config';
+
 const path = Astro.url.pathname;
 
 // "Home" intentionally omitted from primary nav — the wordmark in the header
 // links home, so a separate "Home" link would be redundant.
+// Each entry's `key` maps to nav_sections in src/site.config.ts; a section flagged
+// `false` there is filtered out (its routes still exist, just unlinked).
 const links = [
-  { href: '/blog/', label: 'Blog' },
-  { href: '/projects/', label: 'Projects' },
-  { href: '/teaching/', label: 'Teaching' },
-  { href: '/notes/', label: 'Notes' },
-  { href: '/paper-summaries/', label: 'Paper Summaries' },
-  { href: '/writing/', label: 'Writing' },
-  { href: '/about/', label: 'About' },
-];
+  { key: 'blog', href: '/blog/', label: 'Blog' },
+  { key: 'projects', href: '/projects/', label: 'Projects' },
+  { key: 'teaching', href: '/teaching/', label: 'Teaching' },
+  { key: 'notes', href: '/notes/', label: 'Notes' },
+  { key: 'paper-summaries', href: '/paper-summaries/', label: 'Paper Summaries' },
+  { key: 'writing', href: '/writing/', label: 'Writing' },
+  { key: 'about', href: '/about/', label: 'About' },
+].filter((link) => nav_sections[link.key as keyof typeof nav_sections] !== false);
 
 function is_active(href: string, current: string) {
   return current === href || current.startsWith(href);

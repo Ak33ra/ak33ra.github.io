@@ -31,8 +31,8 @@ gemini, etc.). If the new resume is sufficiently better, the change is accepted
 and committed, else reverted, with all hypotheses and results logged for future 
 agents. 
 
-What a great way to burn tokens! (Developing project may or may not have also 
-been a way to use free tokens...)
+What a great way to burn tokens! (Developing this project may or may not have 
+also been a way to use free tokens...)
 
 # Ok, does it work? 
 Good question. I was also skeptical since resume creation is a pretty 

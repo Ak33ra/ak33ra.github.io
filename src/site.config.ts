@@ -21,7 +21,29 @@ export const feed_collections = {
   blog: true,
   projects: true,
   teaching: true,
-  notes: true,
-  writing: true,
+  notes: false,
+  writing: false,
   'paper-summaries': false, // hidden from the Recent feed; /paper-summaries/ still lists them
+} as const;
+
+/**
+ * Which sections show a link in the primary nav (<Navigation>).
+ *
+ * Flip a value to `false` to hide that section's nav link — handy for scaffolded
+ * collections that have no content yet, so visitors don't click through to an empty
+ * index page. This controls the NAV LINK ONLY; the section's index page and routes
+ * still exist (just unlinked). To fully hide a scaffolded section, also set it
+ * `false` in feed_collections above.
+ *
+ * Keys match the `key` on each entry in src/components/Navigation.astro. Keep this
+ * list complete so it stays an honest, complete menu of the whole nav.
+ */
+export const nav_sections = {
+  blog: true,
+  projects: true,
+  teaching: true,
+  notes: false, // no entries yet — hidden until there's content
+  'paper-summaries': true,
+  writing: false, // no entries yet — hidden until there's content
+  about: true,
 } as const;
