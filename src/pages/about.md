@@ -10,7 +10,7 @@ Some of my current hobbies include weightlifting and camping on Gates 7. (Seriou
 
 ## Currently
 
-- Research at Harvard SEAS
+- Research at the Harvard Systems Group
 - Probably drinking coffee or boba
 
 ## Find me
@@ -18,3 +18,4 @@ Some of my current hobbies include weightlifting and camping on Gates 7. (Seriou
 - [GitHub](https://github.com/Ak33ra)
 - Email: avdg \[at\] cmu \[dot\] edu
 - [LinkedIn](https://www.linkedin.com/in/akira-van-de-groenendaal)
+- [Twitter/X](https://x.com/akira_vdg)
