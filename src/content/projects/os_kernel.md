@@ -18,17 +18,17 @@ somewhere under 10k lines.
 Anyway, as the name suggests, this project involves implementing a kernel
 targeting an IA32 uniprocessor machine. 
 That means implementing all the "stuff" needed to load and run multiple 
-userspace programs: virtual memory, context switch, synchronization, 
+userspace programs: virtual memory, context switching, synchronization, 
 fault handlers, etc. 
 The kernel also supports a core set of syscalls, including but not 
 limited to:
-- allocating and freeing pages
-- yield and sleep
-- fork
-- exec
-- spawning new threads
-- keyboard IO 
-- console display
+- Allocating and freeing pages
+- Yield and sleep
+- Fork
+- Exec
+- Spawning new threads
+- Keyboard input
+- Console display
 
 Those functionalities allow you to run a wide variety of C programs, such as:
 - A chess bot 
