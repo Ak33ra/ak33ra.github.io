@@ -4,24 +4,62 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import ProjectCard from '../../components/ProjectCard.astro';
 
 const all_projects = await getCollection('projects');
-const sorted = all_projects.sort(
-  (a, b) => b.data.start_date.getTime() - a.data.start_date.getTime()
-);
+type Project = (typeof all_projects)[number];
+const by_start_date = (a: Project, b: Project) =>
+  b.data.start_date.getTime() - a.data.start_date.getTime();
+
+const academic_projects = all_projects
+  .filter((project) => project.data.category === 'academic')
+  .sort(by_start_date);
+const side_projects = all_projects
+  .filter((project) => project.data.category === 'side')
+  .sort(by_start_date);
 
 const page_title = "Projects";
 const description = "Projects — selected work and side experiments.";
 ---
 <BaseLayout page_title={page_title} description={description} wide>
-  <div class="project-grid">
-    {sorted.map((project) => <ProjectCard project={project} />)}
-  </div>
+  <section class="project-section" aria-labelledby="academic-projects-heading">
+    <h2 id="academic-projects-heading" class="project-section__title">
+      Academic projects
+    </h2>
+    <div class="project-grid">
+      {academic_projects.map((project) => <ProjectCard project={project} />)}
+    </div>
+  </section>
+
+  <section
+    class="project-section project-section--divided"
+    aria-labelledby="side-projects-heading"
+  >
+    <h2 id="side-projects-heading" class="project-section__title">
+      Side projects
+    </h2>
+    <div class="project-grid">
+      {side_projects.map((project) => <ProjectCard project={project} />)}
+    </div>
+  </section>
 </BaseLayout>
 
 <style>
+  .project-section {
+    margin-block: var(--space-6);
+  }
+
+  .project-section--divided {
+    margin-top: var(--space-12);
+    padding-top: var(--space-8);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .project-section__title {
+    margin: 0 0 var(--space-6);
+    font-size: var(--text-2xl);
+  }
+
   .project-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(min(320px, 100%), 1fr));
     gap: var(--space-6);
-    margin-block: var(--space-6);
   }
 </style>

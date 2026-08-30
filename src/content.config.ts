@@ -42,6 +42,7 @@ const projects = defineCollection({
       .object({
         title: z.string(),
         summary: z.string(),
+        category: z.enum(['academic', 'side']),
         role: z.string(),
         stack: z.array(z.string()),
         start_date: z.coerce.date(),

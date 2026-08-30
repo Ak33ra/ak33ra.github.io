@@ -122,6 +122,7 @@ URL is `/blog/<slug>/` either way.
 ---
 title: 'Project name'
 summary: 'One-sentence pitch.'
+category: side                    # academic | side
 role: 'sole author'              # or 'lead engineer', 'designer + dev', etc.
 stack: ['Astro', 'TypeScript']
 start_date: 2026-01-01

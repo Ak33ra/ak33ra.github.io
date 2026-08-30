@@ -1,6 +1,7 @@
 ---
 title: ''
 summary: ''
+category: side               # academic | side
 role: ''
 stack: []
 start_date: 2026-05-15

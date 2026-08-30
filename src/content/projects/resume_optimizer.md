@@ -1,6 +1,7 @@
 ---
 title: 'Agentic Resume Optimizer'
 summary: 'Orchestrates a CLI agent to run a scored resume optimization loop, inspired by autoresearch.'
+category: side
 role: 'author'
 stack: ['Python']
 start_date: 2026-07-15

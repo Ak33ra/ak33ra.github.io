@@ -1,6 +1,7 @@
 ---
 title: 'Network Simulator'
 summary: 'Queueing theory-based network simulator in Python and C++.'
+category: academic
 role: 'designer + developer'
 stack: [Python, C++, pybind11]
 start_date: 2025-05-01

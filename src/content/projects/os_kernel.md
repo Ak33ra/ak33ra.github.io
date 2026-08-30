@@ -1,6 +1,7 @@
 ---
 title: 'OS Kernel'
 summary: 'Unix-like kernel developed for CMU 15-410, in partnership with Tianyou Zhang.'
+category: academic
 role: 'developer'
 stack: ['C', 'IA32 Assembly', 'Simics']
 start_date: 2026-04-01
