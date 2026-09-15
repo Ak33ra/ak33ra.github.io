@@ -10,6 +10,7 @@ Some of my current hobbies include weightlifting and camping on Gates 7. (Seriou
 
 ## Currently
 
+- Learning about AI safety and governance with the Carnegie AI Safety Initiative
 - Research at the Harvard Systems Group
 - Probably drinking coffee or boba
 
